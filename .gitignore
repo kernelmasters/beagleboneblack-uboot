@@ -17,7 +17,7 @@
 *.pch
 
 # Libraries
-*.lib
+#*.lib
 *.a
 *.la
 *.lo
@@ -35,6 +35,18 @@
 *.i*86
 *.x86_64
 *.hex
+u-boot
+u-boot-nodtb.bin
+u-boot.bin
+u-boot.cfg
+u-boot.cfg.configs
+u-boot.img
+u-boot.lds
+u-boot.srec
+u-boot.sym
+MLO
+MLO.byteswap
+
 
 # Debug files
 *.dSYM/
@@ -43,6 +55,7 @@
 *.pdb
 
 # Kernel Module Compile Results
+.config
 *.mod*
 *.cmd
 .tmp_versions/
