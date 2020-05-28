@@ -15,7 +15,7 @@
 #include <u-boot/sha256.h>
 #include <bootcount.h>
 
-#include <km_bbb.h>
+#include <km_bbb_bootenv.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
