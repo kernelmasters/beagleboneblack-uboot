@@ -80,7 +80,7 @@ void do_board_detect(void)
 		printf("ti_i2c_eeprom_init failed\n");
 
 	//hack-ish, needs to mux'ed early, in do_cape_detect was too late...
-	enable_i2c2_pin_mux();
+//	enable_i2c2_pin_mux();
 #ifndef CONFIG_DM_I2C
 	i2c_init(CONFIG_SYS_OMAP24_I2C_SPEED2, CONFIG_SYS_OMAP24_I2C_SLAVE2);
 #endif
