@@ -15,7 +15,9 @@
 #include <u-boot/sha256.h>
 #include <bootcount.h>
 
+// Kernel Masters BBB headers
 #include <km_bbb_bootenv.h>
+#include <km_lcd.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -29,7 +31,8 @@ DECLARE_GLOBAL_DATA_PTR;
 
 /* Stored value of bootdelay, used by autoboot_command() */
 static int stored_bootdelay;
-
+int lcd_buzzer(int);
+void Lcd_Init(void);
 
 #if defined(CONFIG_AUTOBOOT_KEYED)
 #if defined(CONFIG_AUTOBOOT_STOP_STR_SHA256)
@@ -294,7 +297,8 @@ int multiboot(void)
 {
         unsigned char choice;
 	 //char *envs[] = {"EnvSD.txt","EnvMmc.txt", "EnvTFTP.txt", "EnvTFTPKGDB.txt","EnvNfs.txt"};
-
+        Lcd_Init();
+	lcd_buzzer(777);
 
         do
         {
@@ -307,8 +311,8 @@ int multiboot(void)
                 printf("\nEnter Your Choice: \n");
                 choice = getc();
                 choice -= '0';
-
-                if (choice < 0 || choice > 4)
+		lcd_buzzer(choice);
+		if (choice < 0 || choice > 4)
                 {
                         printf("Wrong Choice\n");
                         continue;
