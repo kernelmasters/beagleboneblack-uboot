@@ -756,6 +756,10 @@ config CMD_GPIO
 	bool "gpio"
 	help
 	  GPIO support.
+config CMD_LCD
+        bool "lcd"
+        help
+          GPIO support
 
 config CMD_GPT
 	bool "GPT (GUID Partition Table) command"
