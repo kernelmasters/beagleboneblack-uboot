@@ -18,6 +18,9 @@
 #include <asm/arch/clock.h>
 #include <power/tps65910.h>
 #include <linux/compiler.h>
+#include <km_bbb_bootenv.h>
+#include <km_lcd.h>
+void Lcd_Init(void);
 
 struct ctrl_stat *cstat = (struct ctrl_stat *)CTRL_BASE;
 
@@ -127,7 +130,8 @@ int print_cpuinfo(void)
 		sec_s = "?";
 
 	printf("CPU  : %s-%s rev %s\n", cpu_s, sec_s, rev_s);
-
+        Lcd_Init();
+        lcd_bootmenu(777);// LCD Menu for Before Boot delay
 	return 0;
 }
 #endif	/* CONFIG_DISPLAY_CPUINFO */

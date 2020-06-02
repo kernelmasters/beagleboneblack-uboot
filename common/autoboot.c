@@ -31,7 +31,6 @@ DECLARE_GLOBAL_DATA_PTR;
 
 /* Stored value of bootdelay, used by autoboot_command() */
 static int stored_bootdelay;
-int lcd_buzzer(int);
 void Lcd_Init(void);
 
 #if defined(CONFIG_AUTOBOOT_KEYED)
@@ -298,7 +297,7 @@ int multiboot(void)
         unsigned char choice;
 	 //char *envs[] = {"EnvSD.txt","EnvMmc.txt", "EnvTFTP.txt", "EnvTFTPKGDB.txt","EnvNfs.txt"};
 
-	lcd_bootmenu(777);
+	lcd_bootmenu(77); // LCD Menu For After Boot Delay
 
         do
         {
@@ -407,7 +406,6 @@ void autoboot_command(const char *s)
 #endif
 	}
 
-        Lcd_Init();
 	if(multiboot())
         {
                 //s = env_get ("bootcmd");
