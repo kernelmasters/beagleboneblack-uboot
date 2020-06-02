@@ -1,3 +1,4 @@
+
 #include <asm/emif.h>
 #include <asm/gpio.h>
 #include <asm/omap_common.h>
@@ -16,6 +17,7 @@
 #include "board.h"
 #include "hash-string.h"
 #include <km_lcd.h>
+#include <string.h>
 
 #define GPIO2_BASE_ADD 0X481AC000
 #define GPIO0_BASE_ADD 0X44E07000
@@ -37,13 +39,15 @@
 #define GPIO2_DIR          (*(unsigned long *)0x481AC134)
 #define GPIO1_DIR          (*(unsigned long *)0x4804C134)
 #define GPIO0_DIR          (*(unsigned long *)0x44E07134)
+#define GPIO0_DATA_IN      (*(unsigned long *)0x44E07138)
 enum status{
 	STAY_BOOT=0,
 	SD_CARD_BOOT,
 	EMMC_BOOT,
 	TFTP_BOOT,
 	TFTP_KGDB,
-	NFS_BOOT
+	NFS_BOOT,
+	SELF_DIAGNOSTIC_TEST
 
 };
 
@@ -81,10 +85,11 @@ void Gpio_Init(void){
                 GPIO2_DIR &= ~(1 << (88 % 32));  //set output direction      
                 GPIO0_DIR &= ~(1 <<  (9 % 32));  //set output direction
                 GPIO0_DIR &= ~(1 << (10 % 32));  //set output direction       
-                 GPIO0_DATA_SET |= (1 << (10 % 32)); // LED ON I- GPIO0_10
-                udelay(1000);
-                GPIO0_DATA_CLEAR = (1 << (10 % 32)); // LED OFF - GPIO0_10   
-                GPIO0_DATA_SET |= (1 <<  (9 % 32));  //set a Data
+
+		 GPIO0_DIR |= (1 << (11 % 32));  //set output direction
+		 GPIO0_DIR |= (1 << (26 % 32));  //set output direction
+		 GPIO0_DIR |= (1 << (27 % 32));  //set output direction
+
 }
 
 
@@ -98,7 +103,7 @@ void Lcd_Init(void)
         Write_Gpio_Value_Control(LCD_EN,0);     //Clear EN
         Write_Gpio_Value_Control(LCD_RS,0);     //Clear RS
                                                                                                       
-	 Write_Gpio_Value_Control(LCD_RW,0);     //Clear RW
+	Write_Gpio_Value_Control(LCD_RW,0);     //Clear RW
         udelay(10);                             //Tas=3uSec
         Write_Gpio_Value_Control(LCD_EN,1);     //Set   EN
         udelay(10);                             //Tas=1uSec
@@ -118,10 +123,9 @@ void Lcd_Init(void)
         HD44780_ClrScr();
         udelay(10);             //Tas=1uSec
 }
- int lcd_buzzer(int Boot_Selection){
+ int lcd_bootmenu(int Boot_Selection){
                
-
-                if(Boot_Selection==777){
+       if(Boot_Selection==777){
                          HD44780_ClrScr();
                          HD44780_Str_XY(3,0,"Welcome to ");
                          HD44780_Str_XY(1,1,"Kernel Masters");
@@ -134,6 +138,7 @@ void Lcd_Init(void)
                          HD44780_ClrScr();
                          HD44780_Str_XY(2,0,"Welcome to KM");
                          HD44780_Str_XY(0,1,"Stay at Boot Mod");
+			printf("To enter bootmenu, run \"km_bootmenu\" command\n");
                         break;
                 case SD_CARD_BOOT:
                          HD44780_ClrScr();
@@ -159,7 +164,12 @@ void Lcd_Init(void)
                          HD44780_Str_XY(2,0,"Welcome to KM");
                          HD44780_Str_XY(0,1,"Boot From Nfs");
                         break;			
-                default:
+                 case SELF_DIAGNOSTIC_TEST:  HD44780_ClrScr();
+                         HD44780_Str_XY(2,0,"Welcome to KM");
+                         HD44780_Str_XY(0,1," SELF_DIAGNOSTIC_TEST");
+			 All_Test_Cases();
+                        break;
+		 default:
                          HD44780_ClrScr();
                          HD44780_Str_XY(2,0,"Welcome to KM");
                          HD44780_Str_XY(0,1,"Choice Corect opt");
@@ -284,9 +294,3 @@ void HD44780_Str_XY(char X, char Y, char *Ptr){
         HD44780_GotoXY(X,Y);
         HD44780_PutStr(Ptr);
 }
-
-
-
-
-
-

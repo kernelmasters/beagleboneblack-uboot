@@ -9,4 +9,5 @@ obj-y	:= mux.o
 endif
 
 obj-y	+= board.o
-obj-y   +=km_lcd.o
+obj-y   += km_lcd.o
+obj-y   += km_bbb_selfdiagnostic.o

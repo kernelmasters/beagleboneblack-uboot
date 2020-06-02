@@ -22,7 +22,7 @@ enum{
 	ON
 };
 
-#define DELAY_EN	3
+#define DELAY_EN	1
 #define HD44780_CONF_BUS	HD44780_FUNC_BUS_4BIT
 #define HD44780_CONF_LINES	HD44780_FUNC_LINES_2
 #define HD44780_CONF_FONT	HD44780_FUNC_FONT_5x8
@@ -99,8 +99,9 @@ void HD44780_GotoXY(unsigned char x, unsigned char y);
 void HD44780_PutStr(char *str);
 void HD44780_Str_XY(char X, char Y, char *Ptr);
 void HD44780_ClrScr(void);
-int lcd_buzzer(int);
+int lcd_bootmenu(int);
 void Lcd_Init(void);
+void All_Test_Cases(void);
 /******************************************************/
 void Init_Lcd_Hardware(void);
 int Export_Gpio(int Pin);

@@ -254,6 +254,13 @@ config CMD_BOOTMENU
 	help
 	  Add an ANSI terminal boot menu command.
 
+config CMD_KM_BOOTMENU
+        bool "km_bootmenu"
+        select MENU
+        help
+          you can choice Kernel Masters Boot menu.
+
+
 config CMD_DTIMG
 	bool "dtimg"
 	help

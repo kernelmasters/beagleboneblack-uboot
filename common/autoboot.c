@@ -297,8 +297,8 @@ int multiboot(void)
 {
         unsigned char choice;
 	 //char *envs[] = {"EnvSD.txt","EnvMmc.txt", "EnvTFTP.txt", "EnvTFTPKGDB.txt","EnvNfs.txt"};
-        Lcd_Init();
-	lcd_buzzer(777);
+
+	lcd_bootmenu(777);
 
         do
         {
@@ -307,12 +307,13 @@ int multiboot(void)
                 printf("3: Boot From TFTP\n");
                 printf("4: Boot From TFTP KGDB KDB\n");
                 printf("5: Boot Using Nfs\n");
+                printf("6: Self diagnostic test\n");
                 printf("0: Stay in Boot Mode\n");
                 printf("\nEnter Your Choice: \n");
                 choice = getc();
                 choice -= '0';
-		lcd_buzzer(choice);
-		if (choice < 0 || choice > 4)
+		lcd_bootmenu(choice);
+		if (choice < 0 || choice > 7)
                 {
                         printf("Wrong Choice\n");
                         continue;
@@ -333,6 +334,13 @@ int multiboot(void)
 		{
 			//printf("autoboot:%s\n",KM_UENV_TFTP);
 			run_command_list(KM_UENV_TFTP , -1, 0);
+			printf("********** END *****************\n");
+			return 1;
+		}
+		if (choice == 4)
+		{
+			//printf("autoboot:%s\n",KM_UENV_TFTP_KGDB);
+			run_command_list(KM_UENV_TFTP_KGDB , -1, 0);
 			printf("********** END *****************\n");
 			return 1;
 		}
@@ -399,6 +407,7 @@ void autoboot_command(const char *s)
 #endif
 	}
 
+        Lcd_Init();
 	if(multiboot())
         {
                 //s = env_get ("bootcmd");
