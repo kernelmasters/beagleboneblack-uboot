@@ -223,6 +223,7 @@ void enable_basic_clocks(void)
 		&cmper->i2c2clkctrl,
 		&cmper->cpgmac0clkctrl,
 		&cmper->spi0clkctrl,
+		&cmper->spi1clkctrl,
 		&cmrtc->rtcclkctrl,
 		&cmper->usb0clkctrl,
 		&cmper->emiffwclkctrl,

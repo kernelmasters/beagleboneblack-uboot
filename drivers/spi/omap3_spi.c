@@ -508,11 +508,11 @@ struct spi_slave *spi_setup_slave(unsigned int bus, unsigned int cs,
 	case 0:
 		 regs = (struct mcspi *)OMAP3_MCSPI1_BASE;
 		 break;
-#ifdef OMAP3_MCSPI2_BASE
+//#ifdef OMAP3_MCSPI2_BASE
 	case 1:
 		 regs = (struct mcspi *)OMAP3_MCSPI2_BASE;
 		 break;
-#endif
+//#endif
 #ifdef OMAP3_MCSPI3_BASE
 	case 2:
 		 regs = (struct mcspi *)OMAP3_MCSPI3_BASE;
