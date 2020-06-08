@@ -15,9 +15,13 @@
 #include <string.h>
 #include <asm/gpio.h>
 
+/* KM-BBB Headers */
+#include <km_bbb_bootenv.h>
+
 void gpio_input_testcase(int ,int );
 void gpio_output_testcase(int );
-static int do_i2c_probe (void);
+static int spi_testcase(void);
+static int i2c_scan (void);
 
 void All_Test_Cases(void){
 	int ret;
@@ -54,7 +58,19 @@ void All_Test_Cases(void){
     	ret = i2c_set_bus_num(1); // set i2c dev 1
         if (ret)
         printf("Failure changing bus number (%d)\n", ret);
-        do_i2c_probe();
+        i2c_scan();
+	printf("SPI Test Case: ENC28J60 Test ...\n");
+	HD44780_Str_XY(0,1,"                ");
+	HD44780_Str_XY(0,1,"SPI2Eth Test");
+	ret = spi_testcase();
+	if (ret != 0) {
+		printf("SPI Test Case FAIL\n");
+		HD44780_Str_XY(0,1,"SPI2Eth Test FAIL");
+	}
+	printf("SPI Test Case PASS: ret:%d\n",ret);
+	HD44780_Str_XY(0,1,"                ");
+	HD44780_Str_XY(0,1,"SPI2Eth Test PASS");
+
       	HD44780_ClrScr();
         HD44780_Str_XY(0,0,"All Tests PASS");
 	printf("All Tests PASS\n");
@@ -104,8 +120,15 @@ void gpio_input_testcase(int gpio,int status)
                 Ent=0;
 }
 
+static int spi_testcase(void)
+{
+	int ret;
 
-static int do_i2c_probe (void)
+	run_command_list(KM_SPI_ENV, -1, 0); // Setup SPI Environment
+	ret = run_command_list(KM_SPI_TEST, -1, 0);// Test Ping Command
+	return ret;
+}
+static int i2c_scan (void)
 {
         int j;
         int addr = -1;

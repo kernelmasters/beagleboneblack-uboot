@@ -125,7 +125,6 @@ static int do_gpio(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 #ifdef CONFIG_DM_GPIO
 	bool all = false;
 #endif
-	enc28j60_initialize(1,0,16000000,0);
 
 	if (argc < 2)
  show_usage:

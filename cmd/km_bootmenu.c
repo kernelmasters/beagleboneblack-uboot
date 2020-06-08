@@ -16,8 +16,10 @@ DECLARE_GLOBAL_DATA_PTR;
 
 
 
-static int do_autoboot_menu(void){
-        multiboot();
+static int do_autoboot_menu(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+{
+	multiboot();
+	return 0;
 }
 
 

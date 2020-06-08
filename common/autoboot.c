@@ -19,6 +19,8 @@
 #include <km_bbb_bootenv.h>
 #include <km_lcd.h>
 
+int enc28j60_initialize(unsigned int , unsigned int , unsigned int , unsigned int );
+
 DECLARE_GLOBAL_DATA_PTR;
 
 #define MAX_DELAY_STOP_STR 32
@@ -297,6 +299,7 @@ int multiboot(void)
         unsigned char choice;
 	 //char *envs[] = {"EnvSD.txt","EnvMmc.txt", "EnvTFTP.txt", "EnvTFTPKGDB.txt","EnvNfs.txt"};
 
+
 	lcd_bootmenu(77); // LCD Menu For After Boot Delay
 
         do
@@ -305,7 +308,7 @@ int multiboot(void)
                 printf("2: Boot From MMC\n");
                 printf("3: Boot From TFTP\n");
                 printf("4: Boot From TFTP KGDB KDB\n");
-                printf("5: Boot Using Nfs\n");
+                printf("5: Choose Ethernet\n");
                 printf("6: Self diagnostic test\n");
                 printf("0: Stay in Boot Mode\n");
                 printf("\nEnter Your Choice: \n");
@@ -342,6 +345,19 @@ int multiboot(void)
 			run_command_list(KM_UENV_TFTP_KGDB , -1, 0);
 			printf("********** END *****************\n");
 			return 1;
+		}
+		if (choice == 5)
+		{
+			printf("\n\n1: Select CPSW [BBB Ethernet]\n");
+			printf("2: Select ENC28J60 [SPI to Ethernet]]\n");
+			printf("\nEnter Your Choice: \n");
+			choice = getc();
+			choice -= '0';
+			if (choice == 1)
+			run_command_list(KM_ETHACT_CPSW , -1, 0);
+			if (choice == 2)
+			run_command_list(KM_ETHACT_ENC , -1, 0);
+			continue;
 		}
 
                 return 0;
@@ -406,6 +422,8 @@ void autoboot_command(const char *s)
 #endif
 	}
 
+	enc28j60_initialize(1,0,16000000,0);
+	run_command_list(KM_UENV, -1, 0); // load uEnv.txt file from /boot folder
 	if(multiboot())
         {
                 //s = env_get ("bootcmd");

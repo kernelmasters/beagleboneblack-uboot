@@ -46,7 +46,7 @@ enum status{
 	EMMC_BOOT,
 	TFTP_BOOT,
 	TFTP_KGDB,
-	NFS_BOOT,
+	ETH_ACT,
 	SELF_DIAGNOSTIC_TEST
 
 };
@@ -143,7 +143,7 @@ void Lcd_Init(void)
                 case STAY_BOOT:
                          HD44780_Str_XY(0,0,"  Boot sequence ");
 			 HD44780_Str_XY(0,1,"                ");
-                         HD44780_Str_XY(0,1,"Stay at Boot Mod");
+                         HD44780_Str_XY(0,1,"Stay @ uboot cmd");
 			printf("To enter bootmenu, run \"km_bootmenu\" command\n");
                         break;
                 case SD_CARD_BOOT:
@@ -166,10 +166,10 @@ void Lcd_Init(void)
 			 HD44780_Str_XY(0,1,"                ");
                          HD44780_Str_XY(0,1,"Boot From TFTPGDB");
                         break;
-		case NFS_BOOT:
+		case ETH_ACT:
 			HD44780_Str_XY(0,0,"  Boot sequence ");
 			 HD44780_Str_XY(0,1,"                ");
-                         HD44780_Str_XY(0,1,"Boot From Nfs");
+                         HD44780_Str_XY(0,1,"Select Ethernet");
                         break;
 		case SELF_DIAGNOSTIC_TEST:
 			HD44780_Str_XY(0,0,"  Boot sequence ");

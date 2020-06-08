@@ -30,10 +30,28 @@ echo "${Red}Check /home/$USER/out folder:"
 echo "${Green}-----------------------------${NC}"
 if [ -d /home/$USER/out ] ; then
 	echo "out folder is found"
-	else
-		echo "out folder is not found and create a out folder".
-		echo "mkdir -p /home/$USER/out/"
-		mkdir -p /home/$USER/out/
+else
+	echo "out folder is not found and create a out folder".
+	echo "mkdir -p /home/$USER/out/"
+	mkdir -p /home/$USER/out/
+fi
+
+echo "${Green}-----------------------------"
+echo "${Red}Check Cross Compiler Toolcahin:"
+echo "${Green}-----------------------------${NC}"
+
+if [ -d "/home/$USER/opt/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin" ] ; then
+        echo "cross compile tool chain found."
+else
+        echo "cross compile tool chain not found. Install ..."
+        mkdir ~/opt
+        cd ~/opt
+        wget http://142.93.218.33/elinux/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf.tar.xz
+        tar -xvf gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf.tar.xz
+        rm -r gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf.tar.xz
+        sh -c "echo 'export PATH=/home/$USER/opt/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin:'$'PATH' >>  /home/$USER/.bashrc"
+        cd -
+        echo "cross_compile tool chain install successfully"
 fi
 
 echo "${Green}-----------------------------"
@@ -51,7 +69,7 @@ echo "${Red}Check .config file"
 echo "${Green}-----------------------------${NC}"
 if [ -f .config ] ; then
 	echo ".config file is found. skip configuration"
-	else
+else
 	echo ".config file not found. To configure the board"
         echo "make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- am335x_evm_defconfig"
         make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- am335x_evm_defconfig

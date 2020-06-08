@@ -1,6 +1,13 @@
 
 int multiboot(void);
 
+
+#define KM_UENV	"echo load uEnv.txt file using TFTP;"\
+		"load mmc 1:1 ${loadaddr} /boot/uEnv.txt;"\
+		"env import -t ${loadaddr} ${filesize};"\
+		"echo uname_r=[$uname_r] ...;"\
+		"echo board_no=[$board_no] ...;"\
+
 #define KM_UENV_SDCARD "setenv bootcmd "\
                 "echo board_name=[$board_name] ...;"\
                 "echo \"******* Booting From SD CARD .... ********\";"\
@@ -42,12 +49,9 @@ int multiboot(void);
                      "echo board_name=[$board_name] ...;"\
                      "echo \"******* Booting From TFTP .... *********\";"\
                      "echo board_name=[$board_name] ...;"\
-                     "load mmc 1:1 ${loadaddr} /boot/uEnv.txt;"\
-                     "env import -t ${loadaddr} ${filesize};"\
-                     "echo uname_r=[$uname_r] ...;"\
-                     "echo board_no=[$board_no] ...;"\
                      "setenv fdtfile am335x-boneblack.dtb;"\
                      "setenv console ttyO0,115200n8;"\
+                     "setenv ethact cpsw;"\
                      "setenv ethaddr 00:00:00:00:00:1${board_no};"\
                      "setenv ipaddr 192.168.1.1${board_no};"\
                      "setenv serverip 192.168.1.21;"\
@@ -67,12 +71,9 @@ int multiboot(void);
                      "echo board_name=[$board_name] ...;"\
                      "echo \"******* Booting From TFTP .... *********\";"\
                      "echo board_name=[$board_name] ...;"\
-                     "load mmc 1:1 ${loadaddr} /boot/uEnv.txt;"\
-                     "env import -t ${loadaddr} ${filesize};"\
-                     "echo uname_r=[$uname_r] ...;"\
-                     "echo board_no=[$board_no] ...;"\
                      "setenv fdtfile am335x-boneblack.dtb;"\
                      "setenv console ttyO0,115200n8;"\
+                     "setenv ethact cpsw;"\
                      "setenv ethaddr 00:00:00:00:00:1${board_no};"\
                      "setenv ipaddr 192.168.1.1${board_no};"\
                      "setenv serverip 192.168.1.21;"\
@@ -87,4 +88,29 @@ int multiboot(void);
                      "run debugargs;"\
                      "echo **** bootz:Start Kernel ****;"\
                      "bootz ${loadaddr} ${rdaddr}:${rdsize} ${fdtaddr};"\
+
+#define KM_ETHACT_CPSW  "echo setup cpsw;"\
+			"setenv ethact cpsw;"\
+			"setenv eth2addr 00:00:00:00:00:1${board_no};"\
+			"setenv ipaddr 192.168.1.1${board_no};"\
+			"setenv serverip 192.168.1.21;"\
+			"echo ethact: ${ethact};"\
+
+#define KM_ETHACT_ENC	"echo setup enc1;"\
+			"setenv ethact enc1.0;"\
+			"setenv eth2addr 00:00:00:00:00:1${board_no};"\
+			"setenv ipaddr 192.168.1.1${board_no};"\
+			"setenv serverip 192.168.1.21;"\
+			"echo ethact: ${ethact};"\
+
+#define KM_SPI_ENV	"echo setup spi2ethernet env;"\
+			"setenv ethact enc1.0;"\
+			"setenv eth2addr 00:00:00:00:00:1${board_no};"\
+			"setenv ipaddr 192.168.1.1${board_no};"\
+			"setenv serverip 192.168.1.21;"\
+			"echo ethact: ${ethact};"\
+
+#define KM_SPI_TEST	"ping 192.168.1.1;"\
+
+
 
