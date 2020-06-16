@@ -99,7 +99,7 @@ echo "";echo""
 while [ ! -z "$1" ] ; do
         case $1 in
         -h|--help)
-                echo "${Red}./km_build_uboot.sh [--board <value>]"
+                echo "${Red}./km-uboot-build.sh [--board <value>]"
                 ;;
         --board)
 		echo "scp /home/$USER/out/MLO  /home/$USER/out/u-boot.img km@192.168.1.1$2:~/" 
