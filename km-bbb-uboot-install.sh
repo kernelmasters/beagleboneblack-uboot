@@ -23,18 +23,6 @@ BWhite='\033[1;37m'       # White
 
 BRedU='\033[4;31m'         # Red
 
-echo "${BRed}${BRedU}Step1: Setup u-boot Environment${NC}"
-echo " "
-echo "${Green}-----------------------------"
-echo "${Red}Check /home/$USER/out folder:"
-echo "${Green}-----------------------------${NC}"
-if [ -d /home/$USER/out ] ; then
-	echo "out folder is found"
-else
-	echo "out folder is not found and create a out folder".
-	echo "mkdir -p /home/$USER/out/"
-	mkdir -p /home/$USER/out/
-fi
 
 check_mmc () {
         FDISK=$(LC_ALL=C fdisk -l 2>/dev/null | grep "Disk ${media}:" | awk '{print $2}')
@@ -47,7 +35,7 @@ check_mmc () {
                 lsblk | grep -v sr0
                 echo ""
                 unset response
-                echo -n "Are you 100% sure, on selecting [${media}] (y/n)? "
+                echo -n "${Green}Are you 100% sure, on selecting [${media}] (y/n)?${NC} "
                 read response
                 if [ "x${response}" != "xy" ] ; then
                         exit
@@ -55,12 +43,12 @@ check_mmc () {
                 echo ""
         else
                 echo ""
-                echo "Are you sure? I Don't see [${media}], here is what I do see..."
+                echo "${Red}Are you sure? I Don't see [${media}], here is what I do see...${NC}"
                 echo ""
                 echo "lsblk:"
                 lsblk | grep -v sr0
                 echo ""
-                echo "Permission Denied. Run with sudo"
+                echo "${Red}Permission Denied. Run with sudo"
                 exit
         fi
 
@@ -73,22 +61,23 @@ while [ ! -z "$1" ] ; do
         -h|--help)
                 ;;
         --mmc)
-		check_mmc
 		media=$2
-		echo -----------------------------
-		echo "MLO: dd if=MLO of=$2 count=2 seek=1 bs=128k"
+		check_mmc
+		echo "${Green}-----------------------------${NC}"
+		echo "${Red}MLO: dd if=MLO of=$2 count=2 seek=1 bs=128k${NC}"
 		dd if=MLO of=${media} count=2 seek=1 bs=128k
-		echo -----------------------------
-		echo -----------------------------
-		echo "u-boot.img: dd if=u-boot.img of=$2 count=4 seek=1 bs=384k"
+		echo "${Green}-----------------------------${NC}"
+		echo ""
+		echo ""
+		echo "${Green}-----------------------------${NC}"
+		echo "${Red}u-boot.img: dd if=u-boot.img of=$2 count=4 seek=1 bs=384k${NC}"
 		dd if=u-boot.img of=${media} count=4 seek=1 bs=384k
-		echo -----------------------------
-		echo -----------------------------
+		echo "${Green}-----------------------------${NC}"
                 ;;
         --board)
-		echo "scp /home/$USER/out/MLO  /home/$USER/out/u-boot.img km@192.168.1.1$2:~/" 
-		scp /home/$USER/out/MLO  /home/$USER/out/u-boot.img km@192.168.1.1$2:~/ 
-                ;;
-        esac
+		echo "${Red}scp /home/$USER/out/MLO  /home/$USER/out/u-boot.img km@192.168.1.1$2:~/"
+		scp MLO  u-boot.img km@192.168.1.1$2:~/
+		;;
+	esac
         shift
 done
