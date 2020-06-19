@@ -54,11 +54,16 @@ check_mmc () {
 
 }
 
+if [ -z "$1" ]; then
+        echo "${Red}usage: sudo $(basename $0) < --mmc /dev/sdX | --board no >${NC}"
+fi
+
 
 # parse commandline options
 while [ ! -z "$1" ] ; do
         case $1 in
         -h|--help)
+	        echo "${Red}usage: sudo $(basename $0) < --mmc /dev/sdX | --board no ${NC}"
                 ;;
         --mmc)
 		media=$2
