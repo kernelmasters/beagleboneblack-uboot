@@ -315,49 +315,52 @@ int multiboot(void)
                 choice = getc();
                 choice -= '0';
 		lcd_bootmenu(choice);
-		if (choice < 0 || choice > 7)
+		if (choice < 0 || choice >= 7)
                 {
                         printf("Wrong Choice\n");
                         continue;
                 }
-                if (choice == 1)
-                {
-			//printf("autoboot:%s\n",KM_UENV_SDCARD);
-			run_command_list(KM_UENV_SDCARD, -1, 0);
-			return 1;
-                }
-                if (choice == 2)
-                {
-			//printf("autoboot:%s\n",KM_UENV_EMMC);
-			run_command_list(KM_UENV_EMMC, -1, 0);
-			return 1;
-                }
-		if (choice == 3)
-		{
-			//printf("autoboot:%s\n",KM_UENV_TFTP);
-			run_command_list(KM_UENV_TFTP , -1, 0);
-			printf("********** END *****************\n");
-			return 1;
-		}
-		if (choice == 4)
-		{
-			//printf("autoboot:%s\n",KM_UENV_TFTP_KGDB);
-			run_command_list(KM_UENV_TFTP_KGDB , -1, 0);
-			printf("********** END *****************\n");
-			return 1;
-		}
-		if (choice == 5)
-		{
-			printf("\n\n1: Select CPSW [BBB Ethernet]\n");
-			printf("2: Select ENC28J60 [SPI to Ethernet]]\n");
-			printf("\nEnter Your Choice: \n");
-			choice = getc();
-			choice -= '0';
-			if (choice == 1)
-			run_command_list(KM_ETHACT_CPSW , -1, 0);
-			if (choice == 2)
-			run_command_list(KM_ETHACT_ENC , -1, 0);
-			continue;
+
+switch(choice){
+                case 0:
+                        printf("Stay @ Uboot mode\n");
+                        break;
+                case 1:
+                        //printf("autoboot:%s\n",KM_UENV_SDCARD);
+                        run_command_list(KM_UENV_SDCARD, -1, 0);
+                        return 1;
+                        break;
+                case 2:
+                        //printf("autoboot:%s\n",KM_UENV_EMMC);
+                        run_command_list(KM_UENV_EMMC, -1, 0);
+                        return 1;
+                case 3:
+                        //printf("autoboot:%s\n",KM_UENV_TFTP);
+                        run_command_list(KM_UENV_TFTP , -1, 0);
+                        printf("********** END *****************\n");
+                        return 1;
+                case 4:
+                        //printf("autoboot:%s\n",KM_UENV_TFTP_KGDB);
+                        run_command_list(KM_UENV_TFTP_KGDB , -1, 0);
+                        printf("********** END *****************\n");
+                        return 1;
+                case 5:
+                        printf("\n\n1: Select CPSW [BBB Ethernet]\n");
+                        printf("2: Select ENC28J60 [SPI to Ethernet]]\n");
+                        printf("\nEnter Your Choice: \n");
+                        choice = getc();
+                        choice -= '0';
+                        if (choice == 1)
+                        run_command_list(KM_ETHACT_CPSW , -1, 0);
+                        if (choice == 2)
+                        run_command_list(KM_ETHACT_ENC , -1, 0);
+                        continue;
+                case 6:
+                        printf(" Self diagnostic test \n");
+                        break;
+                default :
+                        printf("Wrong Choice\n");
+                        continue;
 		}
 
                 return 0;
@@ -414,8 +417,11 @@ void autoboot_command(const char *s)
 #if defined(CONFIG_AUTOBOOT_KEYED) && !defined(CONFIG_AUTOBOOT_KEYED_CTRLC)
 		int prev = disable_ctrlc(1);	/* disable Control C checking */
 #endif
-		printf("autoboot:%s\n",s);
-		run_command_list(s, -1, 0);
+		//printf("autoboot:%s\n",KM_UENV_EMMC);
+		lcd_bootmenu(2);
+		run_command_list(KM_UENV_EMMC, -1, 0);
+
+		//run_command_list(s, -1, 0);
 
 #if defined(CONFIG_AUTOBOOT_KEYED) && !defined(CONFIG_AUTOBOOT_KEYED_CTRLC)
 		disable_ctrlc(prev);	/* restore Control C checking */

@@ -127,58 +127,58 @@ void Lcd_Init(void)
                
        if(Boot_Selection==777){ // Before Boot Delay
                          HD44780_ClrScr();
-                         HD44780_Str_XY(3,0,"Welcome to ");
+                         HD44780_Str_XY(3,0,"Welcome To ");
                          HD44780_Str_XY(1,1,"Kernel Masters");
                          GPIO0_DATA_CLEAR = (1 <<  (9 % 32));   //clear a Data -->BUZZER ON
                           return 0;
                         }                                     
        if(Boot_Selection==77){ // After Boot Delay
                          HD44780_ClrScr();
-                         HD44780_Str_XY(0,0,"  Boot sequence ");
-                         HD44780_Str_XY(1,1,"Choose option ");
+                         HD44780_Str_XY(0,0,"  Boot Sequence ");
+                         HD44780_Str_XY(1,1,"Choose Option ");
                           return 0;
                         }
        switch(Boot_Selection){
 
                 case STAY_BOOT:
-                         HD44780_Str_XY(0,0,"  Boot sequence ");
+                         HD44780_Str_XY(0,0,"  Boot Sequence ");
 			 HD44780_Str_XY(0,1,"                ");
                          HD44780_Str_XY(0,1,"Stay @ uboot cmd");
 			printf("To enter bootmenu, run \"km_bootmenu\" command\n");
                         break;
                 case SD_CARD_BOOT:
-                         HD44780_Str_XY(0,0,"  Boot sequence ");
+                         HD44780_Str_XY(0,0,"  Boot Sequence ");
 			 HD44780_Str_XY(0,1,"                ");
                          HD44780_Str_XY(0,1,"Boot From SDcard");
                         break;
                 case EMMC_BOOT:
-                         HD44780_Str_XY(0,0,"  Boot sequence ");
+                         HD44780_Str_XY(0,0,"  Boot Sequence ");
 			 HD44780_Str_XY(0,1,"                ");
                          HD44780_Str_XY(0,1,"Boot From Emmc");
                         break;
                 case TFTP_BOOT:
-                         HD44780_Str_XY(0,0,"  Boot sequence ");
+                         HD44780_Str_XY(0,0,"  Boot Sequence ");
 			 HD44780_Str_XY(0,1,"                ");
                          HD44780_Str_XY(0,1,"Boot From TFTP");
                         break;
                 case TFTP_KGDB:  
-                         HD44780_Str_XY(0,0,"  Boot sequence ");
+                         HD44780_Str_XY(0,0,"  Boot Sequence ");
 			 HD44780_Str_XY(0,1,"                ");
                          HD44780_Str_XY(0,1,"Boot From TFTPGDB");
                         break;
 		case ETH_ACT:
-			HD44780_Str_XY(0,0,"  Boot sequence ");
+			HD44780_Str_XY(0,0,"  Boot Sequence ");
 			 HD44780_Str_XY(0,1,"                ");
                          HD44780_Str_XY(0,1,"Select Ethernet");
                         break;
 		case SELF_DIAGNOSTIC_TEST:
-			HD44780_Str_XY(0,0,"  Boot sequence ");
+			HD44780_Str_XY(0,0,"  Boot Sequence ");
 			 HD44780_Str_XY(0,1,"                ");
                          HD44780_Str_XY(0,1," SELF_DIAGNOSTIC_TEST");
 			 All_Test_Cases();
                         break;
 		default:
-			HD44780_Str_XY(0,0,"  Boot sequence ");
+			HD44780_Str_XY(0,0,"  Boot Sequence ");
 			 HD44780_Str_XY(0,1,"                ");
                          HD44780_Str_XY(0,1,"Choice Corect opt");
                         break;
