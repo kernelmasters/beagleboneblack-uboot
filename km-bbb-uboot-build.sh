@@ -50,7 +50,9 @@ else
         tar -xvf gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf.tar.xz
         rm -r gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf.tar.xz
         sh -c "echo 'export PATH=/home/$USER/opt/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin:'$'PATH' >>  /home/$USER/.bashrc"
-        cd -
+        temp=$USER
+        sudo sh -c "echo 'export PATH=/home/$temp/opt/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin:'$'PATH' >>  /root/.bashrc"
+	cd -
         echo "cross_compile tool chain install successfully"
 fi
 
@@ -60,6 +62,24 @@ export cpus=`cat /proc/cpuinfo | grep processor | wc -l`
 echo "${Red}No. of CPUS:$cpus"
 echo "${Green}-----------------------------${NC}"
 echo "";echo""
+
+echo "${BRed}${BRedU}Check debian packages${NC}"
+echo ""
+
+dpkg -s bison > /dev/zero
+if [ $? -eq 0 ]; then
+    echo "bison Package  is installed!"
+else
+    echo "bison Package  is NOT installed!"
+    sudo apt install bison
+fi
+dpkg -s flex > /dev/zero
+if [ $? -eq 0 ]; then
+    echo "flex Package  is installed!"
+else
+    echo "flex Package  is NOT installed!"
+    sudo apt install flex
+fi
 
 
 echo "${BRed}${BRedU}Step2: u-boot configuration${NC}"
@@ -78,10 +98,7 @@ echo "";echo""
 
 echo "${BRed}${BRedU}Step3: u-boot compilation${NC}"
 echo " "
-echo "${Red}Build uboot source code. Check No. Of Cpu's"
-export cpus=`cat /proc/cpuinfo | grep processor | wc -l`
-echo "${Red}No. of CPUS:$cpus"
-echo "${Green}-----------------------------${NC}"
+echo "${Red}Build uboot source code"
 echo "${Red}make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j${cpus}${NC}"
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j${cpus}
 echo "";echo""
