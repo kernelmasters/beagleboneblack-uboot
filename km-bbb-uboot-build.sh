@@ -49,6 +49,7 @@ else
         wget http://142.93.218.33/elinux/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf.tar.xz
         tar -xvf gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf.tar.xz
         rm -r gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf.tar.xz
+        export PATH=/home/$USER/opt/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin:$PATH
         sh -c "echo 'export PATH=/home/$USER/opt/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin:'$'PATH' >>  /home/$USER/.bashrc"
         temp=$USER
         sudo sh -c "echo 'export PATH=/home/$temp/opt/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin:'$'PATH' >>  /root/.bashrc"
