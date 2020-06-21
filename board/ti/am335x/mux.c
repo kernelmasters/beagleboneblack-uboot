@@ -22,14 +22,6 @@
 #include "../common/board_detect.h"
 #include "board.h"
 
-static struct module_pin_mux led_sw_buzz_pin_mux[] = {
-        {OFFSET(lcd_data14), (MODE(7)| RXACTIVE)},                            /* lcd_data14 */  //-->KM-USER_LED	{OFFSET(lcd_data15), (MODE(7)| RXACTIVE | PULLUDEN | PULLDOWN_EN)},    /*lcd_data15 */  //-->KM-SW_USER
-	{OFFSET(gpmc_ad10), (MODE(7) | RXACTIVE | PULLUDEN | PULLDOWN_EN)},       /* gpmc_ad10 */  //-->KM-SW_U
-	{OFFSET(gpmc_ad11), (MODE(7) | RXACTIVE | PULLUDEN | PULLDOWN_EN)},    /* gpmc_ad11 */  //-->KM-SW_DOWN
-	{OFFSET(lcd_data13),(MODE(7) | PULLUDEN)},   			       /* GPIO0_9  */    //-->KM-buzzer
-	{-1},
-};
-
 static struct module_pin_mux gpio_interrupt_pin_mux[] = {
         {OFFSET(gpmc_be1n), (MODE(7))},                          /* gpmc_be1n */  //-->RS485_ctl
 	{OFFSET(gpmc_a0), (MODE(7)| RXACTIVE | PULLUDEN | PULLDOWN_EN)},/* gpmc_a0 */  //-->ADXL interrupt
@@ -155,7 +147,6 @@ static struct module_pin_mux mii1_pin_mux[] = {
 
 void km_bbb_mux(void)
 {
-	 configure_module_pin_mux(led_sw_buzz_pin_mux);
 	 configure_module_pin_mux(gpio_interrupt_pin_mux);
 	 configure_module_pin_mux(lcd_pin_mux);
          configure_module_pin_mux(keypad_mux);
