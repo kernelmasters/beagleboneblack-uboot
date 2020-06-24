@@ -153,20 +153,21 @@ static int i2c_scan (void)
         for (j = 0; j < 128; j++) {
                 ret = i2c_probe(j);
                 {
-                        if(ret==0){
-                if(j==80)
-                printf("EEPROM:%d\n",j);
-                if(j==104)
-                printf("ds1307-RTC:%d\n",j);
-
-                sprintf(str,"%d",j);
-                HD44780_Str_XY(0,1,"Device Found:");
-                HD44780_Str_XY(13,1,str);
-                  Delay_HD44780(100);
+			if(ret==0){
+				if(j==80)
+					printf("EEPROM:%d\n",j);
+				if(j==83)
+					printf("ADXL345 - Accelerometer Sensor:%d\n",j);
+				if(j==104)
+					printf("DS1307-RTC:%d\n",j);
+				sprintf(str,"%d",j);
+				HD44780_Str_XY(0,1,"Device Found:");
+				HD44780_Str_XY(13,1,str);
+				Delay_HD44780(100);
                         }
                 }
                 if ((0 <= addr) && (j != addr))
-                        continue;
+			continue;
 
 #if defined(CONFIG_SYS_I2C_NOPROBES)
                 skip = 0;

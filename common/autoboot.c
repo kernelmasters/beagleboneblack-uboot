@@ -308,14 +308,15 @@ int multiboot(void)
                 printf("2: Boot From MMC\n");
                 printf("3: Boot From TFTP\n");
                 printf("4: Boot From TFTP KGDB KDB\n");
-                printf("5: Choose Ethernet\n");
-                printf("6: Self diagnostic test\n");
-                printf("0: Stay in Boot Mode\n");
+                printf("5: Boot From Ethernet\n");
+		printf("6: Boot From Serial\n");
+                printf("7: Self diagnostic test\n");
+		printf("0: Stay in Boot Mode\n");
                 printf("\nEnter Your Choice: \n");
                 choice = getc();
                 choice -= '0';
 		lcd_bootmenu(choice);
-		if (choice < 0 || choice >= 7)
+		if (choice < 0 || choice >= 8)
                 {
                         printf("Wrong Choice\n");
                         continue;
@@ -356,6 +357,17 @@ switch(choice){
                         run_command_list(KM_ETHACT_ENC , -1, 0);
                         continue;
                 case 6:
+                        printf("\n\n1: Serial booting with zimage & dtb \n");
+			printf("2: Serial booting Wthout zimage & with dtb\n");
+			printf("\nEnter Your Choice: \n");
+			choice = getc();
+			choice -= '0';
+			if (choice == 1)
+			run_command_list(KM_SERIAL_ZIMAGE_DTB , -1, 0);
+			if (choice == 2)
+		        run_command_list(KM_SERIAL_DTB , -1, 0);
+                        break;
+                case 7:
                         printf(" Self diagnostic test \n");
                         break;
                 default :

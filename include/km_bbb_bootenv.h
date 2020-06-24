@@ -113,4 +113,31 @@ int multiboot(void);
 #define KM_SPI_TEST	"ping 192.168.1.1;"\
 
 
+#define KM_SERIAL_ZIMAGE_DTB	"echo press ctrl+a then s --> select xmodem --> arch/arm/boot/zImage;"\
+				"loadx 0x82000000 ;" \
+				"echo press ctrl+a then s --> select xmodem --> arch/arm/boot/dtbs/am335x-beagleboneblack.dtb;"\
+				"loadx 0x88000000;"\
+				"setenv emmcargs setenv bootargs console=tty0 console=${console} ${optargs} ${cape_disable} ${cape_enable} root=/dev/mmcblk1p1 rootfstype=${mmcrootfstype} ${cmdline};"\
+				"run emmcargs;"\
+				"echo **** bootz:Start Kernel ****;"\
+				"bootz 0x82000000  -  0x88000000;"\
+
+#define KM_SERIAL_DTB	"setenv bootcmd "\
+			"echo board_name=[$board_name] ...;"\
+			"echo \"******* Booting From EMMC .... ********\";"\
+			"echo board_name=[$board_name] ...;"\
+			"setenv fdtfile am335x-boneblack.dtb;" \
+			"setenv console ttyO0,115200n8;"\
+			"load mmc 1:1 ${loadaddr} /boot/uEnv.txt;"\
+			"env import -t ${loadaddr} ${filesize};" \
+			"echo uname_r=[$uname_r] ...;"\
+			"echo board_no=[$board_no] ...;"\
+			"load mmc 1:1 ${loadaddr} /boot/vmlinuz-${uname_r};"\
+			"echo press ctrl+a s --> select xmodem --> arch/arm/boot/dtbs/am335x-beagleboneblack.dtb;"\
+			"loadx 0x88000000;"\
+			"setenv emmcargs setenv bootargs console=tty0 console=${console} ${optargs} ${cape_disable} ${cape_enable} root=/dev/mmcblk1p1 rootfstype=${mmcrootfstype} ${cmdline};"\
+			"run emmcargs;"\
+			"echo **** bootz:Start Kernel ****;"\
+			"bootz  ${loadaddr}  -  0x88000000;"\
+
 

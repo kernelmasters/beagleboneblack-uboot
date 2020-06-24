@@ -47,6 +47,7 @@ enum status{
 	TFTP_BOOT,
 	TFTP_KGDB,
 	ETH_ACT,
+	SERIAL,
 	SELF_DIAGNOSTIC_TEST
 
 };
@@ -170,6 +171,11 @@ void Lcd_Init(void)
 			HD44780_Str_XY(0,0,"  Boot Sequence ");
 			 HD44780_Str_XY(0,1,"                ");
                          HD44780_Str_XY(0,1,"Select Ethernet");
+                        break;
+		case SERIAL:
+			HD44780_Str_XY(0,0,"  Boot Sequence ");
+			 HD44780_Str_XY(0,1,"                ");
+                         HD44780_Str_XY(0,1,"Boot from SERIAL");
                         break;
 		case SELF_DIAGNOSTIC_TEST:
 			HD44780_Str_XY(0,0,"  Boot Sequence ");
