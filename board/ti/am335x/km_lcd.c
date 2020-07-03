@@ -44,10 +44,10 @@ enum status{
 	STAY_BOOT=0,
 	SD_CARD_BOOT,
 	EMMC_BOOT,
-	TFTP_BOOT,
-	TFTP_KGDB,
-	ETH_ACT,
 	SERIAL,
+	TFTP_BOOT,
+	KGDB_KDB,
+	ETH_ACT,
 	SELF_DIAGNOSTIC_TEST
 
 };
@@ -162,10 +162,10 @@ void Lcd_Init(void)
 			 HD44780_Str_XY(0,1,"                ");
                          HD44780_Str_XY(0,1,"Boot From TFTP");
                         break;
-                case TFTP_KGDB:  
-                         HD44780_Str_XY(0,0,"  Boot Sequence ");
+                case KGDB_KDB:
+			 HD44780_Str_XY(0,0,"  Boot Sequence ");
 			 HD44780_Str_XY(0,1,"                ");
-                         HD44780_Str_XY(0,1,"Boot From TFTPGDB");
+                         HD44780_Str_XY(0,1,"Boot - KGDB_KDB");
                         break;
 		case ETH_ACT:
 			HD44780_Str_XY(0,0,"  Boot Sequence ");

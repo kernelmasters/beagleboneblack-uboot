@@ -302,14 +302,15 @@ int multiboot(void)
 
 	lcd_bootmenu(77); // LCD Menu For After Boot Delay
 
+        printf("\n\n\t #### KM Multi Boot Menu ####\n");
         do
         {
-                printf("\n\n1: Boot From SD Card\n");
-                printf("2: Boot From MMC\n");
-                printf("3: Boot From TFTP\n");
-                printf("4: Boot From TFTP KGDB KDB\n");
-                printf("5: Boot From Ethernet\n");
-		printf("6: Boot From Serial\n");
+                printf("\n\n1: Boot From SD Card  	[MMC0]\n");
+                printf("2: Boot From EMMC     	[MMC1]\n");
+		printf("3: Boot From Serial   	[UART0]\n");
+                printf("4: Boot From TFTP     	[Default CPSW]\n");
+                printf("5: Boot With KGDB-KDB 	[SDCARD,EMMC,TFTP] \n");
+                printf("6: Select Ethernet    	[CPSW,ENC]\n");
                 printf("7: Self diagnostic test\n");
 		printf("0: Stay in Boot Mode\n");
                 printf("\nEnter Your Choice: \n");
@@ -336,19 +337,52 @@ switch(choice){
                         run_command_list(KM_UENV_EMMC, -1, 0);
                         return 1;
                 case 3:
+	                printf("\n\n\t1: Serial booting with zimage & dtb \n");
+                        printf("\t2: Serial booting Wthout zimage & with dtb\n");
+                        printf("\n\tEnter Your Choice: \n");
+                        choice = getc();
+                        choice -= '0';
+                        if (choice == 1)
+                        run_command_list(KM_SERIAL_ZIMAGE_DTB , -1, 0);
+                        if (choice == 2)
+                        run_command_list(KM_SERIAL_DTB , -1, 0);
+                        break;
+                case 4:
                         //printf("autoboot:%s\n",KM_UENV_TFTP);
                         run_command_list(KM_UENV_TFTP , -1, 0);
                         printf("********** END *****************\n");
                         return 1;
-                case 4:
+                case 5:
                         //printf("autoboot:%s\n",KM_UENV_TFTP_KGDB);
-                        run_command_list(KM_UENV_TFTP_KGDB , -1, 0);
+                        //printf("autoboot:%s\n",KM_UENV_TFTP);
+                        printf("\n\n\t1: SDCARD [MMC0]\n");
+                        printf("\t2: eMMC   [MMC1]\n");
+                        printf("\t3: TFTP \n");
+                        printf("\n\tEnter Your Choice: \n");
+                        choice = getc();
+                        choice -= '0';
+                        if (choice == 1)
+                        {
+                                run_command_list(KM_UENV_SDCARD_KGDB, -1, 0);
+                                run_command_list(KM_UENV_SDCARD, -1, 0);
+                        }
+                        if (choice == 2)
+                        {
+                                run_command_list(KM_UENV_EMMC_KGDB, -1, 0);
+                                run_command_list(KM_UENV_EMMC, -1, 0);
+                        }
+                        if (choice == 3)
+                        {
+                                run_command_list(KM_UENV_TFTP_KGDB, -1, 0);
+                                run_command_list(KM_UENV_TFTP, -1, 0);
+                        }
                         printf("********** END *****************\n");
                         return 1;
-                case 5:
-                        printf("\n\n1: Select CPSW [BBB Ethernet]\n");
-                        printf("2: Select ENC28J60 [SPI to Ethernet]]\n");
-                        printf("\nEnter Your Choice: \n");
+
+		case 6:
+                        printf("\n\n\t1: Select CPSW [BBB Ethernet]\n");
+                        printf("\t2: Select ENC28J60 [SPI to Ethernet]]\n");
+                        printf("\n\tEnter Your Choice: \n");
                         choice = getc();
                         choice -= '0';
                         if (choice == 1)
@@ -356,17 +390,6 @@ switch(choice){
                         if (choice == 2)
                         run_command_list(KM_ETHACT_ENC , -1, 0);
                         continue;
-                case 6:
-                        printf("\n\n1: Serial booting with zimage & dtb \n");
-			printf("2: Serial booting Wthout zimage & with dtb\n");
-			printf("\nEnter Your Choice: \n");
-			choice = getc();
-			choice -= '0';
-			if (choice == 1)
-			run_command_list(KM_SERIAL_ZIMAGE_DTB , -1, 0);
-			if (choice == 2)
-		        run_command_list(KM_SERIAL_DTB , -1, 0);
-                        break;
                 case 7:
                         printf(" Self diagnostic test \n");
                         break;
