@@ -21,7 +21,7 @@ int multiboot(void);
                 "load mmc 0:1 ${loadaddr} /boot/vmlinuz-${uname_r};"\
                 "load mmc 0:1 ${fdtaddr} /boot/dtbs/${uname_r}/am335x-boneblack.dtb;"\
 		"setenv sdcard sdcard;"\
-		"setenv kgdb_script 'if test \"${kgdb_boot}\" = \"${sdcard}\" ; then ; setenv debugargs setenv bootargs rootfstype=${mmcrootfstype} root=/dev/mmcblk0p1 console=ttyS0,115200n8 kgdb=ttyS0,115200 kgdboc=ttyS0,115200n8 kgdbwait rootwait; run debugargs ; else ; setenv mmcargs setenv bootargs console=${console} root=/dev/mmcblk0p1 rootfstype=${mmcrootfstype} ; run mmcargs; fi';"\
+		"setenv kgdb_script 'if test \"${kgdb_boot}\" = \"${sdcard}\" ; then ; setenv debugargs setenv bootargs rootfstype=${mmcrootfstype} root=/dev/mmcblk0p1 console=ttyS0,115200n8 rodata=off nokaslr kgdb=ttyS0,115200 kgdboc=ttyS0,115200n8 kgdbwait rootwait; run debugargs ; else ; setenv mmcargs setenv bootargs console=${console} root=/dev/mmcblk0p1 rootfstype=${mmcrootfstype} ; run mmcargs; fi';"\
 		"echo kgdb_script:$kgdb_script;"\
 		"run kgdb_script;"\
                 "echo ****bootz:Start Kernel****;"\
@@ -43,7 +43,7 @@ int multiboot(void);
                 "load mmc 1:1 ${loadaddr} /boot/vmlinuz-${uname_r};"\
                 "load mmc 1:1 ${fdtaddr} /boot/dtbs/${uname_r}/am335x-boneblack.dtb;"\
 		"setenv emmc emmc;"\
-		"setenv kgdb_script 'if test \"${kgdb_boot}\" = \"${emmc}\" ; then ; setenv debugargs setenv bootargs rootfstype=${mmcrootfstype} root=/dev/mmcblk1p1 console=ttyS0,115200n8 kgdb=ttyS0,115200 kgdboc=ttyS0,115200n8 kgdbwait rootwait; run debugargs ; else ; setenv mmcargs setenv bootargs console=${console} root=/dev/mmcblk1p1 rootfstype=${mmcrootfstype} ; run mmcargs; fi';"\
+		"setenv kgdb_script 'if test \"${kgdb_boot}\" = \"${emmc}\" ; then ; setenv debugargs setenv bootargs rootfstype=${mmcrootfstype} root=/dev/mmcblk1p1 console=ttyS0,115200n8 rodata=off nokaslr kgdb=ttyS0,115200 kgdboc=ttyS0,115200n8 kgdbwait rootwait; run debugargs ; else ; setenv mmcargs setenv bootargs console=${console} root=/dev/mmcblk1p1 rootfstype=${mmcrootfstype} ; run mmcargs; fi';"\
 		"echo kgdb_script:$kgdb_script;"\
 		"run kgdb_script;"\
                 "echo ****bootz:Start Kernel****;"\
@@ -71,7 +71,7 @@ int multiboot(void);
                      "tftp ${fdtaddr} board${board_no}/am335x-boneblack.dtb;"\
 		     "echo kgdb_boot:$kgdb_boot;"\
 		     "setenv tftp tftp;"\
-		     "setenv kgdb_script 'if test \"${kgdb_boot}\" = \"${tftp}\" ; then ; setenv debugargs setenv bootargs rootfstype=${mmcrootfstype} root=/dev/mmcblk1p1 console=ttyS0,115200n8 kgdb=ttyS0,115200 kgdboc=ttyS0,115200n8 kgdbwait rootwait; run debugargs ; else ; setenv mmcargs setenv bootargs console=${console} root=/dev/mmcblk1p1 rootfstype=${mmcrootfstype} ; run mmcargs; fi';"\
+		     "setenv kgdb_script 'if test \"${kgdb_boot}\" = \"${tftp}\" ; then ; setenv debugargs setenv bootargs rootfstype=${mmcrootfstype} root=/dev/mmcblk1p1 console=ttyS0,115200n8 rodata=off nokaslr kgdb=ttyS0,115200 kgdboc=ttyS0,115200n8 kgdbwait rootwait; run debugargs ; else ; setenv mmcargs setenv bootargs console=${console} root=/dev/mmcblk1p1 rootfstype=${mmcrootfstype} ; run mmcargs; fi';"\
 		     "echo kgdb_script:$kgdb_script;"\
 		     "run kgdb_script;"\
                      "echo **** bootz:Start Kernel ****;"\
