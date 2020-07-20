@@ -272,6 +272,7 @@ int i2c_set_bus_num(unsigned int bus)
  */
 int i2c_probe(uint8_t chip)
 {
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	return I2C_ADAP->probe(I2C_ADAP, chip);
 }
 

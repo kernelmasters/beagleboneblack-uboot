@@ -483,6 +483,8 @@ static int __omap24_i2c_probe(void __iomem *i2c_base, int ip_rev, int waitdelay,
 	u16 status;
 	int res = 1; /* default = fail */
 
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+
 	if (chip == omap_i2c_read_reg(i2c_base, ip_rev, OMAP_I2C_OA_REG))
 		return res;
 
@@ -500,6 +502,7 @@ static int __omap24_i2c_probe(void __iomem *i2c_base, int ip_rev, int waitdelay,
 
 	status = wait_for_event(i2c_base, ip_rev, waitdelay);
 
+	printf("status:%x\n",status);
 	if ((status & ~I2C_STAT_XRDY) == 0 || (status & I2C_STAT_AL)) {
 		/*
 		 * With current high-level command implementation, notifying
@@ -516,6 +519,7 @@ static int __omap24_i2c_probe(void __iomem *i2c_base, int ip_rev, int waitdelay,
 
 	/* Check for ACK (!NAK) */
 	if (!(status & I2C_STAT_NACK)) {
+		printf("Device Found\n");
 		res = 0;				/* Device found */
 		udelay(waitdelay);/* Required by AM335X in SPL */
 		/* Abort transfer (force idle state) */
@@ -552,6 +556,11 @@ static int __omap24_i2c_read(void __iomem *i2c_base, int ip_rev, int waitdelay,
 {
 	int i2c_error = 0;
 	u16 status;
+	int i;
+	uchar *cp;
+	cp = buffer;
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	printf("ip_rev:%x:chip:%x:regaddr:%x: alen:%d: len:%d\n",ip_rev,chip,addr,alen,len);
 
 	if (alen < 0) {
 		puts("I2C read: addr len < 0\n");
@@ -640,6 +649,7 @@ static int __omap24_i2c_read(void __iomem *i2c_base, int ip_rev, int waitdelay,
 					omap_i2c_write_reg(i2c_base, ip_rev,
 							   addr_byte,
 							   OMAP_I2C_DATA_REG);
+					printf("addr_byte:%x\n",addr_byte);
 					omap_i2c_write_reg(i2c_base, ip_rev,
 							   I2C_STAT_XRDY,
 							   OMAP_I2C_STAT_REG);
@@ -681,8 +691,10 @@ static int __omap24_i2c_read(void __iomem *i2c_base, int ip_rev, int waitdelay,
 			goto rd_exit;
 		}
 		if (status & I2C_STAT_RRDY) {
-			*buffer++ = omap_i2c_read_reg(i2c_base, ip_rev,
-						      OMAP_I2C_DATA_REG);
+			*buffer = omap_i2c_read_reg(i2c_base, ip_rev,
+						      OMAP_I2C_DATA_REG); // print buffer content end of the while loop
+			printf("buffer: %02x", *buffer);
+			buffer++;
 			omap_i2c_write_reg(i2c_base, ip_rev,
 					   I2C_STAT_RRDY, OMAP_I2C_STAT_REG);
 		}
@@ -692,6 +704,10 @@ static int __omap24_i2c_read(void __iomem *i2c_base, int ip_rev, int waitdelay,
 			break;
 		}
 	}
+
+		// for (i=0; i<len; i++)
+		// printf("cp: %02x", *cp++);
+		// printf("\n");
 
 rd_exit:
 	flush_fifo(i2c_base, ip_rev);
@@ -886,6 +902,7 @@ static int omap24_i2c_read(struct i2c_adapter *adap, uchar chip, uint addr,
 	void __iomem *i2c_base = omap24_get_base(adap);
 	int ip_rev = omap24_get_ip_rev();
 
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	return __omap24_i2c_read(i2c_base, ip_rev, adap->waitdelay, chip, addr,
 				 alen, buffer, len);
 }

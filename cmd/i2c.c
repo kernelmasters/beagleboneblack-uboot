@@ -517,6 +517,7 @@ static int do_i2c_md ( cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[]
 #ifdef CONFIG_DM_I2C
 	struct udevice *dev;
 #endif
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 
 	/* We use the last specified parameters, unless new ones are
 	 * entered.
@@ -809,6 +810,7 @@ mod_i2c_mem(cmd_tbl_t *cmdtp, int incrflag, int flag, int argc, char * const arg
 #ifdef CONFIG_DM_I2C
 	struct udevice *dev;
 #endif
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 
 	if (argc != 3)
 		return CMD_RET_USAGE;
@@ -962,6 +964,7 @@ static int do_i2c_probe (cmd_tbl_t *cmdtp, int flag, int argc, char * const argv
 		return CMD_RET_FAILURE;
 #endif
 
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	if (argc == 2)
 		addr = simple_strtol(argv[1], 0, 16);
 
