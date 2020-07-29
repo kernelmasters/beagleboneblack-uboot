@@ -332,6 +332,7 @@ int eth_send(void *packet, int length)
 	struct udevice *current;
 	int ret;
 
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	current = eth_get_dev();
 	if (!current)
 		return -ENODEV;

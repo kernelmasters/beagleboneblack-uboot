@@ -352,6 +352,7 @@ int eth_is_active(struct eth_device *dev)
 
 int eth_send(void *packet, int length)
 {
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	if (!eth_current)
 		return -ENODEV;
 

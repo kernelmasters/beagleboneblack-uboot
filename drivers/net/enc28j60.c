@@ -15,6 +15,7 @@
 #include <miiphy.h>
 #include "enc28j60.h"
 
+#define DEBUG
 /*
  * IMPORTANT: spi_claim_bus() and spi_release_bus()
  * are called at begin and end of each of the following functions:
@@ -814,6 +815,7 @@ static int enc_write_hwaddr(struct eth_device *dev)
  */
 static int enc_init(struct eth_device *dev, bd_t *bis)
 {
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	enc_dev_t *enc = dev->priv;
 
 	if (enc_claim_bus(enc))
@@ -835,6 +837,7 @@ static int enc_init(struct eth_device *dev, bd_t *bis)
  */
 static int enc_recv(struct eth_device *dev)
 {
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	enc_dev_t *enc = dev->priv;
 
 	if (enc_claim_bus(enc))
@@ -866,6 +869,7 @@ static int enc_send(
 	void *packet,
 	int length)
 {
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	enc_dev_t *enc = dev->priv;
 
 	if (enc_claim_bus(enc))
@@ -923,6 +927,7 @@ int enc28j60_initialize(unsigned int bus, unsigned int cs,
 	struct eth_device *dev;
 	enc_dev_t *enc;
 
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	/* try to allocate, check and clear eth_device object */
 	dev = malloc(sizeof(*dev));
 	if (!dev) {

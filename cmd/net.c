@@ -272,6 +272,8 @@ static int netboot_common(enum proto_t proto, cmd_tbl_t *cmdtp, int argc,
 #if defined(CONFIG_CMD_PING)
 static int do_ping(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
+
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	if (argc < 2)
 		return CMD_RET_USAGE;
 

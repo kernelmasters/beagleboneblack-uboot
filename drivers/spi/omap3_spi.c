@@ -248,6 +248,7 @@ static int omap3_spi_txrx(struct omap3_spi_priv *priv, unsigned int len,
 	ulong start;
 	int chconf, i = 0;
 
+	printf("%s:%s:%d len:%d\n",__FILE__,__func__,__LINE__,len);
 	chconf = readl(&priv->regs->channel[priv->cs].chconf);
 
 	/*Enable SPI channel*/
@@ -279,7 +280,6 @@ static int omap3_spi_txrx(struct omap3_spi_priv *priv, unsigned int len,
 			writel(((u16 *)txp)[i], tx);
 		else
 			writel(((u8 *)txp)[i], tx);
-
 		/*Read: wait for RX containing data (RXS == 1)*/
 		start = get_timer(0);
 		while (!(readl(&priv->regs->channel[priv->cs].chstat) &
@@ -292,12 +292,18 @@ static int omap3_spi_txrx(struct omap3_spi_priv *priv, unsigned int len,
 		}
 		/* Read the data */
 		unsigned int *rx = &priv->regs->channel[priv->cs].rx;
-		if (priv->wordlen > 16)
+		if (priv->wordlen > 16) {
 			((u32 *)rxp)[i] = readl(rx);
-		else if (priv->wordlen > 8)
+			printf("32:rxp[]:%x\n",((u32 *)rxp)[i]);
+		}	
+		else if (priv->wordlen > 8) {
 			((u16 *)rxp)[i] = (u16)readl(rx);
-		else
+			printf("16:rxp[]:%x\n",((u16 *)rxp)[i]);
+		}
+		else {
 			((u8 *)rxp)[i] = (u8)readl(rx);
+			printf("8:rxp[]:%x\n",((u8 *)rxp)[i]);
+		     }	
 	}
 	/* Disable the channel */
 	omap3_spi_set_enable(priv, OMAP3_MCSPI_CHCTRL_DIS);
@@ -317,6 +323,7 @@ static int _spi_xfer(struct omap3_spi_priv *priv, unsigned int bitlen,
 	unsigned int	len;
 	int ret = -1;
 
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	if (priv->wordlen < 4 || priv->wordlen > 32) {
 		printf("omap3_spi: invalid wordlen %d\n", priv->wordlen);
 		return -1;
@@ -342,12 +349,18 @@ static int _spi_xfer(struct omap3_spi_priv *priv, unsigned int bitlen,
 		}
 		ret = 0;
 	} else {
-		if (dout != NULL && din != NULL)
+		if (dout != NULL && din != NULL) {
+			printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 			ret = omap3_spi_txrx(priv, len, dout, din, flags);
-		else if (dout != NULL)
+		}
+		else if (dout != NULL) {
+			printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 			ret = omap3_spi_write(priv, len, dout, flags);
-		else if (din != NULL)
+		}
+		else if (din != NULL) {
+			printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 			ret = omap3_spi_read(priv, len, din, flags);
+		}
 	}
 	return ret;
 }
@@ -495,6 +508,7 @@ struct spi_slave *spi_setup_slave(unsigned int bus, unsigned int cs,
 	struct omap3_spi_priv *priv;
 	struct mcspi *regs;
 
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	/*
 	 * OMAP3 McSPI (MultiChannel SPI) has 4 busses (modules)
 	 * with different number of chip selects (CS, channels):
@@ -571,6 +585,7 @@ int spi_xfer(struct spi_slave *slave, unsigned int bitlen,
 {
 	struct omap3_spi_priv *priv = to_omap3_spi(slave);
 
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	return _spi_xfer(priv, bitlen, dout, din, flags);
 }
 

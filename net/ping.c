@@ -39,6 +39,7 @@ static int ping_send(void)
 	uchar *pkt;
 	int eth_hdr_size;
 
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	/* XXX always send arp request */
 
 	debug_cond(DEBUG_DEV_PKT, "sending ARP for %pI4\n", &net_ping_ip);
@@ -68,6 +69,8 @@ static void ping_timeout_handler(void)
 
 void ping_start(void)
 {
+
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	printf("Using %s device\n", eth_get_name());
 	net_set_timeout_handler(10000UL, ping_timeout_handler);
 

@@ -55,6 +55,7 @@ void arp_raw_request(struct in_addr source_ip, const uchar *target_ethaddr,
 	struct arp_hdr *arp;
 	int eth_hdr_size;
 
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	debug_cond(DEBUG_DEV_PKT, "ARP broadcast %d\n", arp_wait_try);
 
 	pkt = arp_tx_packet;
@@ -80,6 +81,7 @@ void arp_raw_request(struct in_addr source_ip, const uchar *target_ethaddr,
 
 void arp_request(void)
 {
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	if ((net_arp_wait_packet_ip.s_addr & net_netmask.s_addr) !=
 	    (net_ip.s_addr & net_netmask.s_addr)) {
 		if (net_gateway.s_addr == 0) {
