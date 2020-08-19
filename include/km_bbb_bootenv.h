@@ -9,45 +9,29 @@ int multiboot(void);
 
 #define KM_UENV_SDCARD_KGDB "setenv kgdb_boot sdcard"
 #define KM_UENV_SDCARD "setenv bootcmd "\
-                "echo board_name=[$board_name] ...;"\
                 "echo \"******* Booting From SD CARD .... ********\";"\
-                "echo board_name=[$board_name] ...;"\
                 "setenv fdtfile km-bbb-am335x.dtb;" \
                 "setenv console ttyO0,115200n8;"\
-                "load mmc 0:1 ${loadaddr} /boot/uEnv.txt;"\
-                "env import -t ${loadaddr} ${filesize};" \
-                "echo uname_r=[$uname_r] ...;"\
-                "echo board_no=[$board_no] ...;"\
-                "load mmc 0:1 ${loadaddr} /boot/vmlinuz-${uname_r};"\
-                "load mmc 0:1 ${fdtaddr} /boot/dtbs/${uname_r}/km-bbb-am335x.dtb;"\
-		"setenv sdcard sdcard;"\
-		"setenv kgdb_script 'if test \"${kgdb_boot}\" = \"${sdcard}\" ; then ; setenv debugargs setenv bootargs rootfstype=${mmcrootfstype} root=/dev/mmcblk0p1 console=ttyS0,115200n8 rodata=off nokaslr kgdb=ttyS0,115200 kgdboc=ttyS0,115200n8 kgdbwait rootwait; run debugargs ; else ; setenv mmcargs setenv bootargs console=${console} root=/dev/mmcblk0p1 rootfstype=${mmcrootfstype} crashkernel=32M  ; run mmcargs; fi';"\
-		"echo kgdb_script:$kgdb_script;"\
-		"run kgdb_script;"\
+                "load mmc 0:2 ${loadaddr} /boot/zImage;"\
+                "load mmc 0:2 ${fdtaddr} /boot/km-bbb-am335x.dtb;"\
+		"setenv mmcargs setenv bootargs console=${console} root=/dev/mmcblk0p2 rootfstype=${mmcrootfstype};"\
+		"run mmcargs;"\
                 "echo ****bootz:Start Kernel****;"\
-                "bootz ${loadaddr} ${rdaddr}:${rdsize} ${fdtaddr};"\
+                "bootz ${loadaddr} - ${fdtaddr};"\
                 "echo ***END***;"
 
 
 #define KM_UENV_EMMC_KGDB "setenv kgdb_boot emmc"
 #define KM_UENV_EMMC "setenv bootcmd "\
-                "echo board_name=[$board_name] ...;"\
-                "echo \"******* Booting From EMMC .... ********\";"\
-                "echo board_name=[$board_name] ...;"\
+                "echo \"******* Booting From EMMC CARD .... ********\";"\
                 "setenv fdtfile km-bbb-am335x.dtb;" \
                 "setenv console ttyO0,115200n8;"\
-                "load mmc 1:1 ${loadaddr} /boot/uEnv.txt;"\
-                "env import -t ${loadaddr} ${filesize};" \
-                "echo uname_r=[$uname_r] ...;"\
-                "echo board_no=[$board_no] ...;"\
-                "load mmc 1:1 ${loadaddr} /boot/vmlinuz-${uname_r};"\
-                "load mmc 1:1 ${fdtaddr} /boot/dtbs/${uname_r}/km-bbb-am335x.dtb;"\
-		"setenv emmc emmc;"\
-		"setenv kgdb_script 'if test \"${kgdb_boot}\" = \"${emmc}\" ; then ; setenv debugargs setenv bootargs rootfstype=${mmcrootfstype} root=/dev/mmcblk1p1 console=ttyS0,115200n8 rodata=off nokaslr kgdb=ttyS0,115200 kgdboc=ttyS0,115200n8 kgdbwait rootwait; run debugargs ; else ; setenv mmcargs setenv bootargs console=${console} root=/dev/mmcblk1p1 rootfstype=${mmcrootfstype} crashkernel=32M ; run mmcargs; fi';"\
-		"echo kgdb_script:$kgdb_script;"\
-		"run kgdb_script;"\
+                "load mmc 1:2 ${loadaddr} /boot/zImage;"\
+                "load mmc 1:2 ${fdtaddr} /boot/km-bbb-am335x.dtb;"\
+		"setenv mmcargs setenv bootargs console=${console} root=/dev/mmcblk1p2 rootfstype=${mmcrootfstype};"\
+		"run mmcargs;"\
                 "echo ****bootz:Start Kernel****;"\
-                "bootz ${loadaddr} ${rdaddr}:${rdsize} ${fdtaddr};"\
+                "bootz ${loadaddr} - ${fdtaddr};"\
                 "echo ***END***;"
 
 

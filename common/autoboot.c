@@ -453,8 +453,8 @@ void autoboot_command(const char *s)
 		int prev = disable_ctrlc(1);	/* disable Control C checking */
 #endif
 		//printf("autoboot:%s\n",KM_UENV_EMMC);
-		lcd_bootmenu(2);
-		run_command_list(KM_UENV_EMMC, -1, 0);
+		lcd_bootmenu(1);
+		run_command_list(KM_UENV_SDCARD, -1, 0);
 
 		//run_command_list(s, -1, 0);
 
