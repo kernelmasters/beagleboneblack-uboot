@@ -22,6 +22,11 @@
 #include "../common/board_detect.h"
 #include "board.h"
 
+static struct module_pin_mux userled_sw[] = {
+        {OFFSET(lcd_data14), (MODE(7))},                          /* lcd_data14 -> gpio0_10 - USER LED*/
+	{OFFSET(lcd_data15), (MODE(7)| RXACTIVE | PULLUDEN | PULLUP_EN)},/* lcd_data15 -> gpio0_11 - USER ENTER  SW */
+	{-1},
+};
 static struct module_pin_mux gpio_interrupt_pin_mux[] = {
         {OFFSET(gpmc_be1n), (MODE(7))},                          /* gpmc_be1n */  //-->RS485_ctl
 	{OFFSET(gpmc_a0), (MODE(7)| RXACTIVE | PULLUDEN | PULLDOWN_EN)},/* gpmc_a0 */  //-->ADXL interrupt
@@ -147,6 +152,7 @@ static struct module_pin_mux mii1_pin_mux[] = {
 
 void km_bbb_mux(void)
 {
+	 configure_module_pin_mux(userled_sw);
 	 configure_module_pin_mux(gpio_interrupt_pin_mux);
 	 configure_module_pin_mux(lcd_pin_mux);
          configure_module_pin_mux(keypad_mux);
