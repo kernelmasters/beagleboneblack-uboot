@@ -128,6 +128,7 @@ static int do_gpio(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	bool all = false;
 #endif
 
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	if (argc < 2)
  show_usage:
 		return CMD_RET_USAGE;
@@ -255,7 +256,7 @@ static int do_gpio(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	return value;
 }
 
-U_BOOT_CMD(gpio, 4, 0, do_gpio,
+U_BOOT_CMD(gpio, 4, 1, do_gpio,
 	   "query and control gpio pins",
 	   "<input|set|clear|toggle|blink> <pin>\n"
 	   "    - input/set/clear/toggle/blink the specified pin\n"
