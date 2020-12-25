@@ -22,12 +22,6 @@
 #include "../common/board_detect.h"
 #include "board.h"
 
-static struct module_pin_mux gpio_interrupt_pin_mux[] = {
-        {OFFSET(gpmc_be1n), (MODE(7))},                          /* gpmc_be1n */  //-->RS485_ctl
-	{OFFSET(gpmc_a0), (MODE(7)| RXACTIVE | PULLUDEN | PULLDOWN_EN)},/* gpmc_a0 */  //-->ADXL interrupt
-	{OFFSET(gpmc_a1), (MODE(7)| RXACTIVE | PULLUDEN | PULLDOWN_EN)},/* gpmc_a1 */  //-->Enc interrupt
-	{-1},
-};
 static struct module_pin_mux lcd_pin_mux[] = {
         {OFFSET(gpmc_ad12), (MODE(7) | PULLUDEN)},   /* GPIO1_12 */     //-->KM-LCD_D4
         {OFFSET(gpmc_ad13), (MODE(7) | PULLUDEN)},   /* GPIO1_13 */     //-->KM-LCD_D5
@@ -38,58 +32,10 @@ static struct module_pin_mux lcd_pin_mux[] = {
         {OFFSET(lcd_hsync), (MODE(7) | PULLUDEN)},   /* GPIO2_23 */    //-->KM-LCD_RW
         {-1},
 };
-static struct module_pin_mux keypad_mux[] = {
-        {OFFSET(lcd_data0), (MODE(7) | PULLUP_EN |RXACTIVE)},  		 //KM-keypad -0
-        {OFFSET(lcd_data1), (MODE(7) | PULLUP_EN |RXACTIVE)},  		 //KM-keypad -1
-        {OFFSET(lcd_data2), (MODE(7) | PULLUP_EN |RXACTIVE)},  		 //KM-keypad -2
-        {OFFSET(lcd_data3), (MODE(7) | PULLUP_EN |RXACTIVE)},  		 //KM-keypad -3
-        {OFFSET(lcd_data4), (MODE(7) | PULLUP_EN |RXACTIVE)},  		 //KM-keypad -4
-        {OFFSET(lcd_data5), (MODE(7) | PULLUP_EN |RXACTIVE)},  		 //KM-keypad -5
-        {OFFSET(lcd_data6), (MODE(7) | PULLUP_EN |RXACTIVE)},  		 //KM-keypad -6
-        {OFFSET(lcd_data7), (MODE(7) | PULLUP_EN |RXACTIVE)},  		 //KM-keypad -7
-        {OFFSET(lcd_ac_bias_en), (MODE(7) | PULLUP_EN |RXACTIVE)},  	 //KM-keypad -8
-        {-1},
-};
 
 static struct module_pin_mux uart0_pin_mux[] = {
 	{OFFSET(uart0_rxd), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* UART0_RXD */
 	{OFFSET(uart0_txd), (MODE(0) | PULLUDEN)},		/* UART0_TXD */
-	{-1},
-};
-
-static struct module_pin_mux uart1_pin_mux[] = {
-	{OFFSET(uart1_rxd), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* UART1_RXD */
-	{OFFSET(uart1_txd), (MODE(0) | PULLUDEN)},		/* UART1_TXD */
-	{-1},
-};
-
-static struct module_pin_mux uart2_pin_mux[] = {
-	{OFFSET(spi0_sclk), (MODE(1) | RXACTIVE | PULLUP_EN)},	                 /* SPI0_SCLK */ //KM-UART2-Rx
-	{OFFSET(spi0_d0),   (MODE(1) | PULLUDEN )},				 /* SPI0_D0   */  //KM-UART-Tx
-	{-1},
-};
-
-static struct module_pin_mux uart4_pin_mux[] = {
-	{OFFSET(gpmc_wait0), (MODE(6) | PULLUP_EN | RXACTIVE)},	/* UART4_RXD */
-	{OFFSET(gpmc_wpn),   (MODE(6) | PULLUDEN)},		/* UART4_TXD */
-	{-1},
-};
-
-static struct module_pin_mux uart5_pin_mux[] = {
-	{OFFSET(lcd_data9), (MODE(4) |  RXACTIVE | PULLUP_EN)},      	/* UART5_RXD */                                 {OFFSET(lcd_data8), (MODE(4) | PULLUDEN)},		/* UART5_TXD */
-	{-1},
-};
-
-static struct module_pin_mux i2c1_pin_mux[] = {
-	{OFFSET(spi0_d1), (MODE(2)  |  RXACTIVE  | PULLUDEN | SLEWCTRL)},	/* spi0_ds1 */ // I2C1_DATA
-	{OFFSET(spi0_cs0), (MODE(2) |  RXACTIVE  | PULLUDEN |   SLEWCTRL) },	/* spi0_cs0 */ // I2C1_SCLK
-	{-1},
-};
-
-static struct module_pin_mux spi1_pin_mux[] = {
-        {OFFSET(mcasp0_ahclkr),(MODE(3) | RXACTIVE  | PULLUDEN)},                   /* KM-SPI1_CS0  */                   {OFFSET(mcasp0_fsx),   (MODE(3) | RXACTIVE  | PULLUDEN )},                  /* KM-SPI1_D0   */
-	{OFFSET(mcasp0_axr0),  (MODE(3) | PULLUP_EN | RXACTIVE )},                  /* KM-SPI1_D1   */
-	{OFFSET(mcasp0_aclkx), (MODE(3) | RXACTIVE  | PULLUP_EN)},                  /* KM-SPI1_CLK  */
 	{-1},
 };
 
@@ -147,19 +93,10 @@ static struct module_pin_mux mii1_pin_mux[] = {
 
 void km_bbb_mux(void)
 {
-	 configure_module_pin_mux(gpio_interrupt_pin_mux);
-	 configure_module_pin_mux(lcd_pin_mux);
-         configure_module_pin_mux(keypad_mux);
-         configure_module_pin_mux(uart1_pin_mux);
-         configure_module_pin_mux(uart2_pin_mux);
-         configure_module_pin_mux(uart4_pin_mux); // RS485
-         configure_module_pin_mux(uart5_pin_mux);
-         configure_module_pin_mux(i2c1_pin_mux);
-	 configure_module_pin_mux(spi1_pin_mux);
-	 configure_module_pin_mux(can0_pin_mux);
-	 configure_module_pin_mux(mii1_pin_mux);
 	 configure_module_pin_mux(mmc0_pin_mux);
 	 configure_module_pin_mux(mmc1_pin_mux);
+	 configure_module_pin_mux(lcd_pin_mux);
+         configure_module_pin_mux(mii1_pin_mux);
 }
 
 void enable_board_pin_mux(void)
