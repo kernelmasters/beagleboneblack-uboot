@@ -278,27 +278,27 @@ void enable_uart0_pin_mux(void)
 
 void enable_uart1_pin_mux(void)
 {
-	configure_module_pin_mux(uart1_pin_mux);
+	//configure_module_pin_mux(uart1_pin_mux);
 }
 
 void enable_uart2_pin_mux(void)
 {
-	configure_module_pin_mux(uart2_pin_mux);
+	//configure_module_pin_mux(uart2_pin_mux);
 }
 
 void enable_uart3_pin_mux(void)
 {
-	configure_module_pin_mux(uart3_pin_mux);
+	//configure_module_pin_mux(uart3_pin_mux);
 }
 
 void enable_uart4_pin_mux(void)
 {
-	configure_module_pin_mux(uart4_pin_mux);
+	//configure_module_pin_mux(uart4_pin_mux);
 }
 
 void enable_uart5_pin_mux(void)
 {
-	configure_module_pin_mux(uart5_pin_mux);
+	//configure_module_pin_mux(uart5_pin_mux);
 }
 
 void enable_i2c0_pin_mux(void)
@@ -306,6 +306,11 @@ void enable_i2c0_pin_mux(void)
 	configure_module_pin_mux(i2c0_pin_mux);
 }
 
+
+void enable_i2c1_pin_mux(void)
+{
+        //configure_module_pin_mux(i2c1_pin_mux);
+}
 void enable_i2c2_pin_mux(void)
 {
 //	configure_module_pin_mux(i2c2_pin_mux);
@@ -381,7 +386,8 @@ void test(void){
 		configure_module_pin_mux(mmc0_pin_mux);
 		/* In profile #2 i2c1 and spi0 conflict. */
 		if (profile & ~PROFILE_2)
-			configure_module_pin_mux(i2c1_pin_mux);
+			enable_i2c1_pin_mux();
+			//configure_module_pin_mux(i2c1_pin_mux);
 		/* Profiles 2 & 3 don't have NAND */
 #ifdef CONFIG_NAND
 		if (profile & ~(PROFILE_2 | PROFILE_3))
@@ -397,7 +403,7 @@ void test(void){
 		configure_module_pin_mux(mmc0_no_cd_pin_mux);
 	} else if (board_is_evm_sk()) {
 		/* Starter Kit EVM */
-		configure_module_pin_mux(i2c1_pin_mux);
+		//configure_module_pin_mux(i2c1_pin_mux);
 		configure_module_pin_mux(gpio0_7_pin_mux);
 		configure_module_pin_mux(rgmii1_pin_mux);
 		configure_module_pin_mux(mmc0_pin_mux_sk_evm);
