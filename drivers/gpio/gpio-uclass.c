@@ -326,6 +326,8 @@ int gpio_direction_output(unsigned gpio, int value)
 	struct gpio_desc desc;
 	int ret;
 
+        printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+
 	ret = gpio_to_device(gpio, &desc);
 	if (ret)
 		return ret;
