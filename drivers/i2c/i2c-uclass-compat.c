@@ -34,6 +34,7 @@ int i2c_probe(uint8_t chip_addr)
 	struct udevice *bus, *dev;
 	int ret;
 
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	ret = uclass_get_device_by_seq(UCLASS_I2C, cur_busnum, &bus);
 	if (ret) {
 		debug("Cannot find I2C bus %d: err=%d\n", cur_busnum, ret);

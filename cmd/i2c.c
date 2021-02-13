@@ -962,6 +962,7 @@ static int do_i2c_probe (cmd_tbl_t *cmdtp, int flag, int argc, char * const argv
 		return CMD_RET_FAILURE;
 #endif
 
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	if (argc == 2)
 		addr = simple_strtol(argv[1], 0, 16);
 

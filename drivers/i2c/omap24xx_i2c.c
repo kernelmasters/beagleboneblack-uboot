@@ -255,6 +255,8 @@ static u16 wait_for_event(void __iomem *i2c_base, int ip_rev, int waitdelay)
 	int timeout = I2C_TIMEOUT;
 	int irq_stat_reg;
 
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	printf("%d\n",waitdelay);
 	irq_stat_reg = (ip_rev == OMAP_I2C_REV_V1) ?
 		       OMAP_I2C_STAT_REG : OMAP_I2C_IP_V2_IRQSTATUS_RAW;
 	do {
@@ -483,6 +485,7 @@ static int __omap24_i2c_probe(void __iomem *i2c_base, int ip_rev, int waitdelay,
 	u16 status;
 	int res = 1; /* default = fail */
 
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	if (chip == omap_i2c_read_reg(i2c_base, ip_rev, OMAP_I2C_OA_REG))
 		return res;
 
@@ -552,7 +555,7 @@ static int __omap24_i2c_read(void __iomem *i2c_base, int ip_rev, int waitdelay,
 {
 	int i2c_error = 0;
 	u16 status;
-
+	uchar temp;
 	if (alen < 0) {
 		puts("I2C read: addr len < 0\n");
 		return 1;
@@ -681,8 +684,11 @@ static int __omap24_i2c_read(void __iomem *i2c_base, int ip_rev, int waitdelay,
 			goto rd_exit;
 		}
 		if (status & I2C_STAT_RRDY) {
-			*buffer++ = omap_i2c_read_reg(i2c_base, ip_rev,
+			temp = omap_i2c_read_reg(i2c_base, ip_rev,
 						      OMAP_I2C_DATA_REG);
+			printf("buffer:%x\n",temp);
+			*buffer++ = temp; 
+
 			omap_i2c_write_reg(i2c_base, ip_rev,
 					   I2C_STAT_RRDY, OMAP_I2C_STAT_REG);
 		}
@@ -1040,6 +1046,7 @@ static int omap_i2c_probe_chip(struct udevice *bus, uint chip_addr,
 {
 	struct omap_i2c *priv = dev_get_priv(bus);
 
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	return __omap24_i2c_probe(priv->regs, priv->ip_rev, priv->waitdelay,
 				  chip_addr);
 }
