@@ -1,5 +1,5 @@
 #!/bin/sh
-#New
+
 # Regular Colors
 Black='\033[0;30m'        # Black
 Red='\033[0;31m'          # Red
@@ -82,20 +82,38 @@ else
     sudo apt install flex
 fi
 
-
-echo "${BRed}${BRedU}Step2: u-boot configuration${NC}"
-echo " "
+echo "${BRed}${BRedU}Step2: U-boot source code configuration${NC}"
+echo ""
 echo "${Green}-----------------------------"
-echo "${Red}Check .config file"
+echo "${Red}Check .config file:"
 echo "${Green}-----------------------------${NC}"
 if [ -f .config ] ; then
-	echo ".config file is found. skip configuration"
-else
-	echo ".config file not found. To configure the board"
-        echo "make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- am335x_evm_defconfig"
+        echo "${Red}~/.config file found.[U-boot Configuration has DONE]"
+        echo "If you want to configure the u-boot again type \"yes\" otherwise \"no\" to skip u-boot configuration${NC}"
+        read  temp
+        if [ $temp = "yes" ];then
         make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- am335x_evm_defconfig
+        fi
+else
+        echo "${Green}~/.config file not found [U-boot Configuration has not done]."
+        echo "u-boot confgiuration starts .....${NC}"
+        x=5
+        while [ "$x" -ne 0 ]; do
+                echo -n "$x "
+                x=$(($x-1))
+                sleep 1
+        done
+        echo "${Purple}make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- am335x_evm_defconfig${NC}"
+        make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- am335x_evm_defconfig
+        if [ -f .config ] ; then
+                echo "${Green}U-boot Configuration has done successfully"
+        else
+                echo "${Red}U-boot Configuration is not done. exit here"
+                exit 0
+        fi
 fi
-echo "";echo""
+echo "";echo ""
+
 
 echo "${BRed}${BRedU}Step3: u-boot compilation${NC}"
 echo " "
@@ -103,26 +121,3 @@ echo "${Red}Build uboot source code"
 echo "${Red}make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j${cpus}${NC}"
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j${cpus}
 echo "";echo""
-
-echo "${BRed}${BRedU}Step4: Install MLO and u-boot.img:${NC}"
-echo " "
-echo "${Green}-----------------------------"
-echo "${Red} Copy MLO & U-boot.img in to ~/out folder"
-echo "${Green}-----------------------------${NC}"
-echo "cp ./MLO ./u-boot.img /home/$USER/out/"
-cp ./MLO ./u-boot.img /home/$USER/out/
-echo "";echo""
-
-# parse commandline options
-while [ ! -z "$1" ] ; do
-        case $1 in
-        -h|--help)
-                echo "${Red}./km-uboot-build.sh [--board <value>]"
-                ;;
-        --board)
-		echo "scp /home/$USER/out/MLO  /home/$USER/out/u-boot.img km@192.168.1.1$2:~/" 
-		scp /home/$USER/out/MLO  /home/$USER/out/u-boot.img km@192.168.1.1$2:~/ 
-                ;;
-        esac
-        shift
-done

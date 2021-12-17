@@ -54,11 +54,16 @@ check_mmc () {
 
 }
 
+if [ -z "$1" ]; then
+        echo  "${Green}script usage: sudo $(basename $0) [--mmc /dev/sdX]  [--scp <user_name> <ip_addr>] ${NC}"
+fi
+
 
 # parse commandline options
 while [ ! -z "$1" ] ; do
         case $1 in
         -h|--help)
+	        echo "script usage: sudo $(basename $0) [--mmc /dev/sdX] [--scp <user_name <ipaddr>]"
                 ;;
         --mmc)
 		media=$2
@@ -74,9 +79,18 @@ while [ ! -z "$1" ] ; do
 		dd if=u-boot.img of=${media} count=4 seek=1 bs=384k
 		echo "${Green}-----------------------------${NC}"
                 ;;
-        --board)
-		echo "${Red}scp /home/$USER/out/MLO  /home/$USER/out/u-boot.img km@192.168.1.1$2:~/"
-		scp MLO  u-boot.img km@192.168.1.1$2:~/
+        --scp)
+                if [ $# -le 2 ] ; then
+                        echo "pls enter user-name of board"
+                        read username
+                        echo "pls enter ipaddress of board"
+                        read ipaddress
+                        echo -e "${Purple} scp MLO u-boot.img  username@$ipaddress:~/install ${NC}"
+                        scp MLO u-boot.img ${username}@${ipaddress}:~/install
+                else
+                        echo -e "${Purple} scp MLO u-boot.img $2@$3:~/install ${NC}"
+                        scp MLO u-boot.img $2@$3:~/install
+                fi
 		;;
 	esac
         shift
