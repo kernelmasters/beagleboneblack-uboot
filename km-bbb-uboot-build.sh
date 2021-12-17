@@ -92,7 +92,8 @@ if [ -f .config ] ; then
         echo "If you want to configure the u-boot again type \"yes\" otherwise \"no\" to skip u-boot configuration${NC}"
         read  temp
         if [ $temp = "yes" ];then
-        make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- am335x_evm_defconfig
+        echo "${Purple}make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- menuconfig${NC}"
+        make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- menuconfig
         fi
 else
         echo "${Green}~/.config file not found [U-boot Configuration has not done]."
