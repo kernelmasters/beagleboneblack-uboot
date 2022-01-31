@@ -142,8 +142,8 @@ static int i2c_scan (void)
 #ifdef CONFIG_DM_I2C
         struct udevice *bus, *dev;
 
-        if (i2c_get_cur_bus(&bus))
-                return CMD_RET_FAILURE;
+//        if (i2c_get_cur_bus(&bus))
+//                return CMD_RET_FAILURE;
 #endif
 
 
