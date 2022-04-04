@@ -3,7 +3,7 @@
 VERSION = 2019
 PATCHLEVEL = 04
 SUBLEVEL =
-EXTRAVERSION = KernelMasters
+EXTRAVERSION = Kishore-uboot-learning
 NAME =
 
 # *DOCUMENTATION*
