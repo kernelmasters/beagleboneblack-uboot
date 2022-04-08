@@ -31,7 +31,7 @@ static struct module_pin_mux lcd_pin_mux[] = {
         {OFFSET(lcd_pclk),  (MODE(7) | PULLUDEN)},   /* GPIO2_24 */    //-->KM-LCD_EN
         {OFFSET(lcd_hsync), (MODE(7) | PULLUDEN)},   /* GPIO2_23 */    //-->KM-LCD_RW
         {OFFSET(lcd_data13), (MODE(0))},             /* lcd_data13 */ // By default disable Buzzer
-        {OFFSET(lcd_data14), (MODE(0))},             /* lcd_data14 */ // By default disable USER LED
+        {OFFSET(lcd_data14), (MODE(7))},             /* lcd_data14.gpio0_10 */ // By default disable USER LED
         {OFFSET(lcd_data15), (MODE(0))},             /* lcd_data15 */ // Bydefault disable USER SW
 
         {-1},
@@ -94,6 +94,15 @@ static struct module_pin_mux mii1_pin_mux[] = {
 	{OFFSET(mdio_clk), MODE(0) | PULLUP_EN},	/* MDIO_CLK */
 	{-1},
 };
+ static struct module_pin_mux spi1_pin_mux[] = {
+            {OFFSET(mcasp0_ahclkr),(MODE(3) | RXACTIVE  | PULLUDEN)},                   /* KM-SPI1_CS0  */   
+            {OFFSET(mcasp0_fsx),   (MODE(3) | RXACTIVE  | PULLUDEN )},                  /* KM-SPI1_D0   */
+    {OFFSET(mcasp0_axr0),  (MODE(3) | PULLUP_EN | RXACTIVE )},                  /* KM-SPI1_D1   */
+    {OFFSET(mcasp0_aclkx), (MODE(3) | RXACTIVE  | PULLUP_EN)},                  /* KM-SPI1_CLK  */
+    {-1},
+ };
+
+
 
 void km_bbb_mux(void)
 {
@@ -101,6 +110,7 @@ void km_bbb_mux(void)
 	 configure_module_pin_mux(mmc1_pin_mux);
 	 configure_module_pin_mux(lcd_pin_mux);
          configure_module_pin_mux(mii1_pin_mux);
+    	 configure_module_pin_mux(spi1_pin_mux);
 }
 
 void enable_board_pin_mux(void)
