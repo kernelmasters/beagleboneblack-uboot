@@ -125,7 +125,7 @@ static int do_gpio(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 #ifdef CONFIG_DM_GPIO
 	bool all = false;
 #endif
-
+	printf("%s:%s:%d\n",__FILE__,__func__,__LINE__);
 	if (argc < 2)
  show_usage:
 		return CMD_RET_USAGE;
