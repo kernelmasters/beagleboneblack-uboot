@@ -28,6 +28,7 @@ DECLARE_GLOBAL_DATA_PTR;
  */
 static int gpio_to_device(unsigned int gpio, struct gpio_desc *desc)
 {
+	printf("U-Boot Start %s %s %d\n",__FILE__,__func__,__LINE__);
 	struct gpio_dev_priv *uc_priv;
 	struct udevice *dev;
 	int ret;
@@ -45,6 +46,7 @@ static int gpio_to_device(unsigned int gpio, struct gpio_desc *desc)
 		}
 	}
 
+	printf("U-Boot End %s %s %d\n",__FILE__,__func__,__LINE__);
 	/* No such GPIO */
 	return ret ? ret : -ENOENT;
 }
@@ -91,6 +93,7 @@ int dm_gpio_lookup_name(const char *name, struct gpio_desc *desc)
 int gpio_lookup_name(const char *name, struct udevice **devp,
 		     unsigned int *offsetp, unsigned int *gpiop)
 {
+	printf("U-Boot Start %s %s %d\n",__FILE__,__func__,__LINE__);
 	struct gpio_desc desc;
 	int ret;
 
@@ -110,6 +113,7 @@ int gpio_lookup_name(const char *name, struct udevice **devp,
 		*gpiop = uc_priv->gpio_base + desc.offset;
 	}
 
+	printf("U-Boot End %s %s %d\n",__FILE__,__func__,__LINE__);
 	return 0;
 }
 
@@ -299,6 +303,7 @@ static int check_reserved(const struct gpio_desc *desc, const char *func)
  */
 int gpio_direction_input(unsigned gpio)
 {
+	printf("U-Boot Start %s %s %d\n",__FILE__,__func__,__LINE__);
 	struct gpio_desc desc;
 	int ret;
 
@@ -309,6 +314,7 @@ int gpio_direction_input(unsigned gpio)
 	if (ret)
 		return ret;
 
+	printf("U-Boot End - next gpio_get_ops %s %s %d\n",__FILE__,__func__,__LINE__);
 	return gpio_get_ops(desc.dev)->direction_input(desc.dev, desc.offset);
 }
 
@@ -323,6 +329,7 @@ int gpio_direction_input(unsigned gpio)
  */
 int gpio_direction_output(unsigned gpio, int value)
 {
+	printf("U-Boot Start %s %s %d\n",__FILE__,__func__,__LINE__);
 	struct gpio_desc desc;
 	int ret;
 
@@ -333,6 +340,7 @@ int gpio_direction_output(unsigned gpio, int value)
 	if (ret)
 		return ret;
 
+	printf("U-Boot End - next gpio_get_ops %s %s %d\n",__FILE__,__func__,__LINE__);
 	return gpio_get_ops(desc.dev)->direction_output(desc.dev,
 							desc.offset, value);
 }
@@ -443,6 +451,7 @@ int dm_gpio_set_dir(struct gpio_desc *desc)
  */
 int gpio_get_value(unsigned gpio)
 {
+	printf("U-Boot Start %s %s %d\n",__FILE__,__func__,__LINE__);
 	int ret;
 
 	struct gpio_desc desc;
@@ -450,6 +459,7 @@ int gpio_get_value(unsigned gpio)
 	ret = gpio_to_device(gpio, &desc);
 	if (ret)
 		return ret;
+	printf("U-Boot End %s %s %d\n",__FILE__,__func__,__LINE__);
 	return dm_gpio_get_value(&desc);
 }
 

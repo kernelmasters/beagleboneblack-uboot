@@ -54,6 +54,7 @@ int gpio_is_valid(int gpio)
 static void _set_gpio_direction(const struct gpio_bank *bank, int gpio,
 				int is_input)
 {
+	printf("U-Boot Start %s %s %d\n",__FILE__,__func__,__LINE__);
 	void *reg = bank->base;
 	u32 l;
 
@@ -64,6 +65,7 @@ static void _set_gpio_direction(const struct gpio_bank *bank, int gpio,
 		l |= 1 << gpio;
 	else
 		l &= ~(1 << gpio);
+	printf("U-Boot End - __raw_writel %s %s %d\n",__FILE__,__func__,__LINE__);
 	__raw_writel(l, reg);
 }
 
@@ -73,11 +75,13 @@ static void _set_gpio_direction(const struct gpio_bank *bank, int gpio,
  */
 static int _get_gpio_direction(const struct gpio_bank *bank, int gpio)
 {
+	printf("U-Boot Start %s %s %d\n",__FILE__,__func__,__LINE__);
 	void *reg = bank->base;
 	u32 v;
 
 	reg += OMAP_GPIO_OE;
 
+	printf("U-Boot End - __raw_readl %s %s %d\n",__FILE__,__func__,__LINE__);
 	v = __raw_readl(reg);
 
 	if (v & (1 << gpio))
@@ -89,6 +93,7 @@ static int _get_gpio_direction(const struct gpio_bank *bank, int gpio)
 static void _set_gpio_dataout(const struct gpio_bank *bank, int gpio,
 				int enable)
 {
+	printf("U-Boot Start %s %s %d\n",__FILE__,__func__,__LINE__);
 	void *reg = bank->base;
 	u32 l = 0;
 
@@ -98,11 +103,13 @@ static void _set_gpio_dataout(const struct gpio_bank *bank, int gpio,
 		reg += OMAP_GPIO_CLEARDATAOUT;
 
 	l = 1 << gpio;
+	printf("U-Boot End - __raw_writel %s %s %d\n",__FILE__,__func__,__LINE__);
 	__raw_writel(l, reg);
 }
 
 static int _get_gpio_value(const struct gpio_bank *bank, int gpio)
 {
+	printf("U-Boot Start %s %s %d\n",__FILE__,__func__,__LINE__);
 	void *reg = bank->base;
 	int input;
 
@@ -118,6 +125,7 @@ static int _get_gpio_value(const struct gpio_bank *bank, int gpio)
 		return -1;
 	}
 
+	printf("U-Boot End - __raw_readl %s %s %d\n",__FILE__,__func__,__LINE__);
 	return (__raw_readl(reg) & (1 << gpio)) != 0;
 }
 
@@ -125,15 +133,18 @@ static int _get_gpio_value(const struct gpio_bank *bank, int gpio)
 
 static inline const struct gpio_bank *get_gpio_bank(int gpio)
 {
+	printf("U-Boot %s %s %d\n",__FILE__,__func__,__LINE__);
 	return &omap_gpio_bank[gpio >> 5];
 }
 
 static int check_gpio(int gpio)
 {
+	printf("U-Boot Start %s %s %d\n",__FILE__,__func__,__LINE__);
 	if (!gpio_is_valid(gpio)) {
 		printf("ERROR : check_gpio: invalid GPIO %d\n", gpio);
 		return -1;
 	}
+	printf("U-Boot End %s %s %d\n",__FILE__,__func__,__LINE__);
 	return 0;
 }
 
@@ -171,6 +182,7 @@ int gpio_get_value(unsigned gpio)
  */
 int gpio_direction_input(unsigned gpio)
 {
+	printf("U-Boot Start %s %s %d\n",__FILE__,__func__,__LINE__);
 	const struct gpio_bank *bank;
 
 	if (check_gpio(gpio) < 0)
@@ -178,6 +190,7 @@ int gpio_direction_input(unsigned gpio)
 
 	bank = get_gpio_bank(gpio);
 	_set_gpio_direction(bank, get_gpio_index(gpio), 1);
+	printf("U-Boot End %s %s %d\n",__FILE__,__func__,__LINE__);
 
 	return 0;
 }
@@ -187,6 +200,7 @@ int gpio_direction_input(unsigned gpio)
  */
 int gpio_direction_output(unsigned gpio, int value)
 {
+	printf("U-Boot Start %s %s %d\n",__FILE__,__func__,__LINE__);
 	const struct gpio_bank *bank;
 
 	if (check_gpio(gpio) < 0)
@@ -195,6 +209,7 @@ int gpio_direction_output(unsigned gpio, int value)
 	bank = get_gpio_bank(gpio);
 	_set_gpio_dataout(bank, get_gpio_index(gpio), value);
 	_set_gpio_direction(bank, get_gpio_index(gpio), 0);
+	printf("U-Boot End %s %s %d\n",__FILE__,__func__,__LINE__);
 
 	return 0;
 }
@@ -206,6 +221,7 @@ int gpio_direction_output(unsigned gpio, int value)
  */
 int gpio_request(unsigned gpio, const char *label)
 {
+	printf("U-Boot %s %s %d\n",__FILE__,__func__,__LINE__);
 	if (check_gpio(gpio) < 0)
 		return -1;
 
@@ -217,6 +233,7 @@ int gpio_request(unsigned gpio, const char *label)
  */
 int gpio_free(unsigned gpio)
 {
+	printf("U-Boot %s %s %d\n",__FILE__,__func__,__LINE__);
 	return 0;
 }
 

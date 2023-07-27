@@ -14,6 +14,7 @@
 
 __weak int name_to_gpio(const char *name)
 {
+	printf("U-Boot %s %s %d\n",__FILE__,__func__,__LINE__);
 	return simple_strtoul(name, NULL, 10);
 }
 
@@ -117,6 +118,7 @@ static int do_gpio_status(bool all, const char *gpio_name)
 
 static int do_gpio(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
+	printf("U-Boot Start %s %s %d\n",__FILE__,__func__,__LINE__);
 	unsigned int gpio;
 	enum gpio_cmd sub_cmd;
 	int value;
@@ -239,6 +241,7 @@ static int do_gpio(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	if (ret != -EBUSY)
 		gpio_free(gpio);
 
+	printf("U-Boot End %s %s %d\n",__FILE__,__func__,__LINE__);
 	return value;
 }
 
